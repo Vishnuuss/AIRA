@@ -42,7 +42,7 @@ const Navbar = () => {
       <div className="navbar-inner">
         <motion.div className="navbar-logo" onClick={() => scrollTo('hero')}
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} data-cursor-pointer>
-          <img src="/logo.svg" alt="AIRA AI" className="navbar-logo-img" />
+          <img src="/logo-icon.png" alt="AIRA AI" className="navbar-logo-img" />
           <span className="navbar-logo-text">AIRA <span className="navbar-logo-ai">AI</span></span>
         </motion.div>
 

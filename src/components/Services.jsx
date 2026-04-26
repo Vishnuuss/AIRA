@@ -1,109 +1,165 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Services.css';
 
-const services = [
+gsap.registerPlugin(ScrollTrigger);
+
+const servicesData = [
   {
-    icon: '⚡',
+    id: '01',
     title: 'AI Automation',
     subtitle: 'End-to-End Workflow Intelligence',
-    description: 'We design and deploy intelligent automation pipelines that eliminate manual bottlenecks, reduce operational costs, and scale your business processes infinitely.',
-    features: ['Multi-platform workflow orchestration', 'Intelligent document processing', 'Automated decision engines', 'Real-time data synchronization'],
-    gradient: 'linear-gradient(135deg, rgba(82,140,94,0.15), rgba(46,77,54,0.05))',
+    desc: 'We design and deploy intelligent automation pipelines that eliminate manual bottlenecks, reduce operational costs, and scale your business processes infinitely.',
+    features: ['Cross-platform orchestration', 'Intelligent document processing', 'Automated decision engines', 'Real-time data sync'],
+    image: '/ai-automation.png',
+    color: 'var(--primary)'
   },
   {
-    icon: '🤖',
-    title: 'AI Agents',
-    subtitle: 'Autonomous Digital Workers',
-    description: 'Custom-built autonomous agents that understand context, make decisions, and execute complex multi-step tasks across your entire digital ecosystem.',
-    features: ['Multi-agent orchestration systems', 'Natural language task execution', 'Adaptive learning & self-improvement', 'Cross-platform integration'],
-    gradient: 'linear-gradient(135deg, rgba(143,209,157,0.12), rgba(82,140,94,0.05))',
+    id: '02',
+    title: 'Autonomous Agents',
+    subtitle: 'Digital Workers that Think',
+    desc: 'Custom-built autonomous agents that understand context, make decisions, and execute complex multi-step tasks across your entire digital ecosystem.',
+    features: ['Multi-agent systems', 'Natural language task execution', 'Adaptive learning', 'API integration'],
+    image: '/ai-agents.png',
+    color: 'var(--tertiary)'
   },
   {
-    icon: '🧠',
+    id: '03',
     title: 'Enterprise RAG',
     subtitle: 'Knowledge-Augmented Intelligence',
-    description: 'Production-grade Retrieval Augmented Generation systems that give your AI access to your proprietary knowledge with enterprise security and accuracy.',
-    features: ['Custom vector database architecture', 'Hybrid search (semantic + keyword)', 'Multi-modal document ingestion', 'Hallucination-free responses'],
-    gradient: 'linear-gradient(135deg, rgba(82,140,94,0.1), rgba(143,209,157,0.08))',
-  },
+    desc: 'Production-grade Retrieval Augmented Generation systems that give your AI secure access to your proprietary data with absolute accuracy.',
+    features: ['Vector database architecture', 'Hybrid semantic search', 'Multi-modal ingestion', 'Zero-hallucination guardrails'],
+    image: '/rag-system.png',
+    color: 'var(--secondary)'
+  }
 ];
 
-const ServiceCard = ({ service, index }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  const handleMouseMove = (e) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -12;
-    card.style.transform = `perspective(800px) rotateY(${x}deg) rotateX(${y}deg) translateY(-8px)`;
-    const glow = card.querySelector('.service-card-glow');
-    if (glow) {
-      glow.style.left = `${e.clientX - rect.left}px`;
-      glow.style.top = `${e.clientY - rect.top}px`;
-    }
-  };
-
-  const handleMouseLeave = (e) => {
-    e.currentTarget.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg) translateY(0px)';
-  };
-
-  return (
-    <motion.div ref={ref} className="service-card"
-      style={{ background: service.gradient }}
-      onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 60 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
-      data-cursor-pointer>
-      <div className="service-card-glow" />
-      <div className="service-card-shine" />
-      <div className="service-icon">{service.icon}</div>
-      <h3 className="service-title">{service.title}</h3>
-      <p className="service-subtitle">{service.subtitle}</p>
-      <p className="service-description">{service.description}</p>
-      <ul className="service-features">
-        {service.features.map((f, i) => (
-          <motion.li key={i}
-            initial={{ opacity: 0, x: -15 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: index * 0.15 + 0.3 + i * 0.08, duration: 0.5 }}>
-            <span className="feature-dot" />
-            {f}
-          </motion.li>
-        ))}
-      </ul>
-      <motion.div className="service-cta" whileHover={{ x: 5 }} data-cursor-pointer>
-        Learn more <span>→</span>
-      </motion.div>
-    </motion.div>
-  );
-};
-
 const Services = () => {
-  const headingRef = useRef(null);
-  const isInView = useInView(headingRef, { once: true, margin: '-100px' });
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Header animation
+      gsap.fromTo('.services-header > *',
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.services-header',
+            start: 'top 80%'
+          }
+        }
+      );
+
+      // Service rows animation
+      const rows = gsap.utils.toArray('.service-row');
+      rows.forEach((row, i) => {
+        const isEven = i % 2 === 0;
+        const img = row.querySelector('.service-image-container');
+        const content = row.querySelector('.service-content');
+        
+        gsap.fromTo(img,
+          { x: isEven ? -100 : 100, opacity: 0, rotationY: isEven ? -15 : 15 },
+          { x: 0, opacity: 1, rotationY: 0, duration: 1.2, ease: 'power3.out',
+            scrollTrigger: { trigger: row, start: 'top 75%' }
+          }
+        );
+
+        gsap.fromTo(content,
+          { x: isEven ? 100 : -100, opacity: 0 },
+          { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.2,
+            scrollTrigger: { trigger: row, start: 'top 75%' }
+          }
+        );
+
+        // Image parallax effect inside container
+        gsap.to(row.querySelector('.service-img'), {
+          yPercent: 15,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: row,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true
+          }
+        });
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const handleMouseMove = (e, targetRef) => {
+    const { left, top, width, height } = targetRef.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;
+    const y = (e.clientY - top) / height - 0.5;
+    
+    gsap.to(targetRef, {
+      rotationY: x * 20,
+      rotationX: -y * 20,
+      transformPerspective: 1000,
+      ease: 'power1.out',
+      duration: 0.5
+    });
+  };
+
+  const handleMouseLeave = (targetRef) => {
+    gsap.to(targetRef, { rotationY: 0, rotationX: 0, duration: 0.5, ease: 'power1.out' });
+  };
 
   return (
-    <section id="services" className="services-section">
+    <section id="services" className="services-section" ref={containerRef}>
       <div className="services-container">
-        <motion.div ref={headingRef} className="services-header"
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7 }}>
+        
+        <div className="services-header">
           <span className="section-label">WHAT WE BUILD</span>
-          <h2 className="section-title">Enterprise AI <span className="text-gradient">Solutions</span></h2>
+          <h2 className="section-title">High-End <span className="text-gradient">AI Solutions</span></h2>
           <p className="section-subtitle">
-            From intelligent automation to autonomous agents — we build AI systems that deliver measurable business impact.
+            Leveraging cutting-edge AI architecture to solve complex enterprise challenges.
           </p>
-        </motion.div>
-        <div className="services-grid">
-          {services.map((service, i) => (
-            <ServiceCard key={i} service={service} index={i} />
+        </div>
+
+        <div className="services-list">
+          {servicesData.map((service, i) => (
+            <div key={i} className={`service-row ${i % 2 === 0 ? '' : 'reverse'}`}>
+              
+              <div 
+                className="service-image-container"
+                onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
+                onMouseLeave={(e) => handleMouseLeave(e.currentTarget)}
+              >
+                <div className="service-image-glow" style={{ background: service.color }}></div>
+                <div className="service-image-wrapper">
+                  <img src={service.image} alt={service.title} className="service-img" />
+                  <div className="service-image-overlay"></div>
+                </div>
+              </div>
+
+              <div className="service-content">
+                <div className="service-num" style={{ color: service.color }}>{service.id}</div>
+                <h3 className="service-title">{service.title}</h3>
+                <p className="service-subtitle" style={{ color: service.color }}>{service.subtitle}</p>
+                <p className="service-desc">{service.desc}</p>
+                
+                <ul className="service-features-list">
+                  {service.features.map((f, idx) => (
+                    <li key={idx}>
+                      <span className="feature-icon" style={{ backgroundColor: service.color }}></span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <button className="service-btn" data-cursor-pointer>
+                  <span>Explore Module</span>
+                  <div className="service-btn-arrow">↗</div>
+                </button>
+              </div>
+
+            </div>
           ))}
         </div>
+
       </div>
     </section>
   );

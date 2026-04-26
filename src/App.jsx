@@ -8,6 +8,8 @@ import Services from './components/Services';
 import FloatingTools from './components/FloatingTools';
 import About from './components/About';
 import Process from './components/Process';
+import Testimonials from './components/Testimonials';
+import Problem from './components/Problem';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import './App.css';
@@ -19,7 +21,7 @@ const LoadingScreen = ({ onComplete }) => (
       initial={{ scale: 0.5, opacity: 0, rotate: -90 }}
       animate={{ scale: 1, opacity: 1, rotate: 0 }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}>
-      <img src="/logo.svg" alt="AIRA AI" className="loading-logo" />
+      <img src="/logo-icon.png" alt="AIRA AI" className="loading-logo" />
       <motion.div className="loading-ring"
         animate={{ rotate: 360 }}
         transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} />
@@ -69,6 +71,8 @@ function App() {
             <FloatingTools />
             <About />
             <Process />
+            <Testimonials />
+            <Problem />
             <Contact />
           </main>
           <Footer />

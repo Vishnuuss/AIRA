@@ -1,111 +1,167 @@
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Hero.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Hero = () => {
-  const letterVariants = {
-    hidden: { opacity: 0, y: 80, rotateX: -90 },
-    visible: (i) => ({
-      opacity: 1, y: 0, rotateX: 0,
-      transition: { delay: 0.8 + i * 0.08, duration: 0.8, ease: [0.16, 1, 0.3, 1] }
-    }),
-  };
+  const heroRef = useRef(null);
+  const logoRef = useRef(null);
+  const titleRef = useRef(null);
+  const bgRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Background parallax
+      gsap.to(bgRef.current, {
+        y: '20%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+
+      // Cinematic entrance
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+      tl.fromTo(bgRef.current, 
+        { scale: 1.1, opacity: 0, filter: 'blur(20px)' },
+        { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 2.5 }
+      )
+      .fromTo(logoRef.current,
+        { scale: 0, rotation: -180, opacity: 0 },
+        { scale: 1, rotation: 0, opacity: 1, duration: 1.5 },
+        "-=1.5"
+      )
+      .fromTo('.hero-title-char',
+        { y: 100, opacity: 0, rotationX: -90 },
+        { y: 0, opacity: 1, rotationX: 0, duration: 1, stagger: 0.05 },
+        "-=1"
+      )
+      .fromTo('.hero-tagline',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        "-=0.8"
+      )
+      .fromTo('.hero-description',
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        "-=0.8"
+      )
+      .fromTo('.hero-ctas',
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1 },
+        "-=0.8"
+      )
+      .fromTo('.hero-scroll-indicator',
+        { opacity: 0 },
+        { opacity: 1, duration: 1 },
+        "-=0.5"
+      );
+
+      // Mouse parallax for floating elements
+      const handleMouseMove = (e) => {
+        const { clientX, clientY } = e;
+        const xPos = (clientX / window.innerWidth - 0.5) * 40;
+        const yPos = (clientY / window.innerHeight - 0.5) * 40;
+
+        gsap.to('.hero-shape', {
+          x: xPos,
+          y: yPos,
+          duration: 1,
+          ease: 'power2.out',
+          stagger: 0.1
+        });
+        
+        gsap.to(logoRef.current, {
+          x: xPos * 0.5,
+          y: yPos * 0.5,
+          rotationY: xPos * 0.5,
+          rotationX: -yPos * 0.5,
+          duration: 1,
+          ease: 'power2.out'
+        });
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const title = 'AIRA';
 
   return (
-    <section id="hero" className="hero">
-      {/* Gradient orbs */}
-      <div className="hero-orb hero-orb-1" />
-      <div className="hero-orb hero-orb-2" />
-      <div className="hero-orb hero-orb-3" />
+    <section id="hero" className="hero" ref={heroRef}>
+      {/* Cinematic Background */}
+      <div className="hero-bg" ref={bgRef} style={{ backgroundImage: 'url(/hero-bg.png)' }}></div>
+      <div className="hero-overlay"></div>
 
-      {/* Grid lines background */}
-      <div className="hero-grid" />
-
-      {/* Floating geometric shapes */}
-      <motion.div className="hero-shape hex-1" animate={{ y: [0, -20, 0], rotate: [0, 180, 360] }}
-        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} />
-      <motion.div className="hero-shape hex-2" animate={{ y: [0, 15, 0], rotate: [360, 180, 0] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'linear' }} />
-      <motion.div className="hero-shape circle-1" animate={{ y: [0, -25, 0], x: [0, 10, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }} />
-      <motion.div className="hero-shape line-1" animate={{ rotate: [0, 360] }}
-        transition={{ duration: 30, repeat: Infinity, ease: 'linear' }} />
+      {/* Floating geometric shapes (VFX) */}
+      <div className="hero-shape hex-1"></div>
+      <div className="hero-shape hex-2"></div>
+      <div className="hero-shape circle-1"></div>
+      <div className="hero-shape line-1"></div>
+      
+      {/* Glowing orbs */}
+      <div className="hero-orb hero-orb-cyan"></div>
+      <div className="hero-orb hero-orb-purple"></div>
 
       <div className="hero-content">
-        {/* Logo animation */}
-        <motion.div className="hero-logo-wrapper"
-          initial={{ scale: 0, opacity: 0, rotate: -180 }}
-          animate={{ scale: 1, opacity: 1, rotate: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}>
-          <img src="/logo.svg" alt="AIRA AI" className="hero-logo" />
-          <div className="hero-logo-glow" />
-          <motion.div className="hero-logo-ring"
-            animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }} />
-          <motion.div className="hero-logo-ring ring-2"
-            animate={{ rotate: -360 }} transition={{ duration: 25, repeat: Infinity, ease: 'linear' }} />
-        </motion.div>
+        {/* Logo */}
+        <div className="hero-logo-container" ref={logoRef}>
+          <img src="/logo-icon.png" alt="AIRA Logo" className="hero-logo-img" />
+          <div className="hero-logo-glow"></div>
+        </div>
 
         {/* Title */}
         <div className="hero-title-wrapper">
-          <div className="hero-title-line">
+          <div className="hero-title-line" ref={titleRef}>
             {title.split('').map((char, i) => (
-              <motion.span key={i} className="hero-title-char" custom={i}
-                variants={letterVariants} initial="hidden" animate="visible"
-                style={{ display: 'inline-block' }}>
+              <span key={i} className="hero-title-char" style={{ display: 'inline-block' }}>
                 {char}
-              </motion.span>
+              </span>
             ))}
-            <motion.span className="hero-title-ai" initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-              AI
-            </motion.span>
+            <span className="hero-title-char text-gradient" style={{ marginLeft: '16px' }}>AI</span>
           </div>
         </div>
 
         {/* Tagline */}
-        <motion.p className="hero-tagline"
-          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-          Intelligent Automation · Autonomous Agents · Enterprise RAG
-        </motion.p>
+        <p className="hero-tagline">
+          Intelligent Automation <span className="dot">•</span> Autonomous Agents <span className="dot">•</span> Enterprise RAG
+        </p>
 
-        <motion.p className="hero-description"
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.9, duration: 0.8 }}>
-          We architect AI systems that transform how enterprises operate.
-          From autonomous agent workflows to retrieval-augmented knowledge systems.
-        </motion.p>
+        <p className="hero-description">
+          We don't just build software. We architect intelligent digital ecosystems 
+          that redefine how your enterprise operates and scales.
+        </p>
 
         {/* CTAs */}
-        <motion.div className="hero-ctas"
-          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.2, duration: 0.8 }}>
-          <motion.button className="hero-cta-primary" data-cursor-pointer
-            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(82,140,94,0.4)' }}
-            whileTap={{ scale: 0.95 }}
+        <div className="hero-ctas">
+          <button className="hero-cta-primary" data-cursor-pointer
             onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
-            Explore Solutions
+            <div className="cta-glow"></div>
+            <span>Explore Solutions</span>
             <span className="cta-arrow">→</span>
-          </motion.button>
-          <motion.button className="hero-cta-secondary" data-cursor-pointer
-            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+          </button>
+          <button className="hero-cta-secondary" data-cursor-pointer
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-            Book a Strategy Call
-          </motion.button>
-        </motion.div>
+            Book Strategy Call
+          </button>
+        </div>
 
         {/* Scroll indicator */}
-        <motion.div className="hero-scroll-indicator"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ delay: 3, duration: 1 }}>
-          <motion.div className="scroll-mouse"
-            animate={{ y: [0, 8, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+        <div className="hero-scroll-indicator">
+          <div className="scroll-mouse">
             <div className="scroll-wheel" />
-          </motion.div>
-          <span>Scroll to explore</span>
-        </motion.div>
+          </div>
+          <span>Discover</span>
+        </div>
       </div>
     </section>
   );

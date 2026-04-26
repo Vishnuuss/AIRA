@@ -17,7 +17,7 @@ const Footer = () => {
         <div className="footer-main">
           <div className="footer-brand">
             <div className="footer-logo">
-              <img src="/logo.svg" alt="AIRA AI" className="footer-logo-img" />
+              <img src="/logo-icon.png" alt="AIRA AI" className="footer-logo-img" />
               <span className="footer-logo-text">AIRA <span>AI</span></span>
             </div>
             <p className="footer-tagline">
