@@ -9,41 +9,28 @@ const Hero = () => {
   const heroRef = useRef(null);
   const logoRef = useRef(null);
   const titleRef = useRef(null);
-  const bgRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Background parallax
-      gsap.to(bgRef.current, {
-        y: '20%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-        }
-      });
-
       // Cinematic entrance
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-      tl.fromTo(bgRef.current, 
-        { scale: 1.1, opacity: 0, filter: 'blur(20px)' },
-        { scale: 1, opacity: 1, filter: 'blur(0px)', duration: 2.5 }
+      tl.fromTo('.hero-grid-bg', 
+        { scale: 1.1, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 2.5 }
       )
       .fromTo(logoRef.current,
-        { scale: 0, rotation: -180, opacity: 0 },
-        { scale: 1, rotation: 0, opacity: 1, duration: 1.5 },
+        { scale: 0, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1.5 },
         "-=1.5"
       )
       .fromTo('.hero-title-char',
-        { y: 100, opacity: 0, rotationX: -90 },
-        { y: 0, opacity: 1, rotationX: 0, duration: 1, stagger: 0.05 },
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.03 },
         "-=1"
       )
       .fromTo('.hero-tagline',
-        { y: 30, opacity: 0 },
+        { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 },
         "-=0.8"
       )
@@ -53,14 +40,9 @@ const Hero = () => {
         "-=0.8"
       )
       .fromTo('.hero-ctas',
-        { y: 30, opacity: 0 },
+        { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 },
         "-=0.8"
-      )
-      .fromTo('.hero-scroll-indicator',
-        { opacity: 0 },
-        { opacity: 1, duration: 1 },
-        "-=0.5"
       );
 
       // Mouse parallax for floating elements
@@ -69,21 +51,12 @@ const Hero = () => {
         const xPos = (clientX / window.innerWidth - 0.5) * 40;
         const yPos = (clientY / window.innerHeight - 0.5) * 40;
 
-        gsap.to('.hero-shape', {
+        gsap.to('.hero-motion-graphic', {
           x: xPos,
           y: yPos,
           duration: 1,
           ease: 'power2.out',
           stagger: 0.1
-        });
-        
-        gsap.to(logoRef.current, {
-          x: xPos * 0.5,
-          y: yPos * 0.5,
-          rotationY: xPos * 0.5,
-          rotationX: -yPos * 0.5,
-          duration: 1,
-          ease: 'power2.out'
         });
       };
 
@@ -98,19 +71,18 @@ const Hero = () => {
 
   return (
     <section id="hero" className="hero" ref={heroRef}>
-      {/* Cinematic Background */}
-      <div className="hero-bg" ref={bgRef} style={{ backgroundImage: 'url(/hero-bg.png)' }}></div>
+      {/* Live Motion Graphic Background */}
+      <div className="hero-grid-bg">
+        <div className="grid-horizontal"></div>
+        <div className="grid-vertical"></div>
+      </div>
       <div className="hero-overlay"></div>
 
-      {/* Floating geometric shapes (VFX) */}
-      <div className="hero-shape hex-1"></div>
-      <div className="hero-shape hex-2"></div>
-      <div className="hero-shape circle-1"></div>
-      <div className="hero-shape line-1"></div>
-      
-      {/* Glowing orbs */}
-      <div className="hero-orb hero-orb-cyan"></div>
-      <div className="hero-orb hero-orb-purple"></div>
+      {/* Code-based VFX */}
+      <div className="hero-motion-graphic mg-1"></div>
+      <div className="hero-motion-graphic mg-2"></div>
+      <div className="hero-motion-graphic mg-3"></div>
+      <div className="hero-orb hero-orb-green"></div>
 
       <div className="hero-content">
         {/* Logo */}
@@ -137,8 +109,7 @@ const Hero = () => {
         </p>
 
         <p className="hero-description">
-          We don't just build software. We architect intelligent digital ecosystems 
-          that redefine how your enterprise operates and scales.
+          We architect intelligent digital ecosystems that redefine how your enterprise operates. Highly realistic, production-ready AI solutions.
         </p>
 
         {/* CTAs */}
@@ -153,14 +124,6 @@ const Hero = () => {
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
             Book Strategy Call
           </button>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="hero-scroll-indicator">
-          <div className="scroll-mouse">
-            <div className="scroll-wheel" />
-          </div>
-          <span>Discover</span>
         </div>
       </div>
     </section>

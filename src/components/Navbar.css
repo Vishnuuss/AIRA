@@ -19,7 +19,7 @@
 }
 .navbar-logo-img { width: 38px; height: 38px; }
 .navbar-logo-text {
-  font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem;
+  font-family: 'Inter', sans-serif; font-size: 1.3rem;
   font-weight: 600; letter-spacing: 0.15em; color: #fff;
 }
 .navbar-logo-ai { color: var(--primary); font-weight: 400; }

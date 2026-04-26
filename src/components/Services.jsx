@@ -12,8 +12,7 @@ const servicesData = [
     subtitle: 'End-to-End Workflow Intelligence',
     desc: 'We design and deploy intelligent automation pipelines that eliminate manual bottlenecks, reduce operational costs, and scale your business processes infinitely.',
     features: ['Cross-platform orchestration', 'Intelligent document processing', 'Automated decision engines', 'Real-time data sync'],
-    image: '/ai-automation.png',
-    color: 'var(--primary)'
+    type: 'automation'
   },
   {
     id: '02',
@@ -21,8 +20,7 @@ const servicesData = [
     subtitle: 'Digital Workers that Think',
     desc: 'Custom-built autonomous agents that understand context, make decisions, and execute complex multi-step tasks across your entire digital ecosystem.',
     features: ['Multi-agent systems', 'Natural language task execution', 'Adaptive learning', 'API integration'],
-    image: '/ai-agents.png',
-    color: 'var(--tertiary)'
+    type: 'agents'
   },
   {
     id: '03',
@@ -30,10 +28,52 @@ const servicesData = [
     subtitle: 'Knowledge-Augmented Intelligence',
     desc: 'Production-grade Retrieval Augmented Generation systems that give your AI secure access to your proprietary data with absolute accuracy.',
     features: ['Vector database architecture', 'Hybrid semantic search', 'Multi-modal ingestion', 'Zero-hallucination guardrails'],
-    image: '/rag-system.png',
-    color: 'var(--secondary)'
+    type: 'rag'
   }
 ];
+
+const MotionGraphic = ({ type }) => {
+  if (type === 'automation') {
+    return (
+      <div className="mg-container automation-mg">
+        <div className="mg-node node-1"></div>
+        <div className="mg-node node-2"></div>
+        <div className="mg-node node-3"></div>
+        <div className="mg-line line-1"></div>
+        <div className="mg-line line-2"></div>
+        <div className="mg-scanline"></div>
+      </div>
+    );
+  } else if (type === 'agents') {
+    return (
+      <div className="mg-container agents-mg">
+        <div className="agent-core"></div>
+        <div className="agent-orbit orbit-1">
+          <div className="agent-satellite"></div>
+        </div>
+        <div className="agent-orbit orbit-2">
+          <div className="agent-satellite"></div>
+        </div>
+        <div className="agent-orbit orbit-3">
+          <div className="agent-satellite"></div>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className="mg-container rag-mg">
+        <div className="rag-doc doc-1"></div>
+        <div className="rag-doc doc-2"></div>
+        <div className="rag-doc doc-3"></div>
+        <div className="rag-particles">
+          {[...Array(20)].map((_, i) => (
+            <div key={i} className={`rag-particle p-${i}`}></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+};
 
 const Services = () => {
   const containerRef = useRef(null);
@@ -42,12 +82,9 @@ const Services = () => {
     const ctx = gsap.context(() => {
       // Header animation
       gsap.fromTo('.services-header > *',
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.2, ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.services-header',
-            start: 'top 80%'
-          }
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power2.out',
+          scrollTrigger: { trigger: '.services-header', start: 'top 80%' }
         }
       );
 
@@ -55,57 +92,27 @@ const Services = () => {
       const rows = gsap.utils.toArray('.service-row');
       rows.forEach((row, i) => {
         const isEven = i % 2 === 0;
-        const img = row.querySelector('.service-image-container');
+        const visual = row.querySelector('.service-visual-container');
         const content = row.querySelector('.service-content');
         
-        gsap.fromTo(img,
-          { x: isEven ? -100 : 100, opacity: 0, rotationY: isEven ? -15 : 15 },
-          { x: 0, opacity: 1, rotationY: 0, duration: 1.2, ease: 'power3.out',
+        gsap.fromTo(visual,
+          { x: isEven ? -50 : 50, opacity: 0 },
+          { x: 0, opacity: 1, duration: 1, ease: 'power2.out',
             scrollTrigger: { trigger: row, start: 'top 75%' }
           }
         );
 
         gsap.fromTo(content,
-          { x: isEven ? 100 : -100, opacity: 0 },
-          { x: 0, opacity: 1, duration: 1.2, ease: 'power3.out', delay: 0.2,
+          { x: isEven ? 50 : -50, opacity: 0 },
+          { x: 0, opacity: 1, duration: 1, ease: 'power2.out', delay: 0.2,
             scrollTrigger: { trigger: row, start: 'top 75%' }
           }
         );
-
-        // Image parallax effect inside container
-        gsap.to(row.querySelector('.service-img'), {
-          yPercent: 15,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: row,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true
-          }
-        });
       });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
-
-  const handleMouseMove = (e, targetRef) => {
-    const { left, top, width, height } = targetRef.getBoundingClientRect();
-    const x = (e.clientX - left) / width - 0.5;
-    const y = (e.clientY - top) / height - 0.5;
-    
-    gsap.to(targetRef, {
-      rotationY: x * 20,
-      rotationX: -y * 20,
-      transformPerspective: 1000,
-      ease: 'power1.out',
-      duration: 0.5
-    });
-  };
-
-  const handleMouseLeave = (targetRef) => {
-    gsap.to(targetRef, { rotationY: 0, rotationX: 0, duration: 0.5, ease: 'power1.out' });
-  };
 
   return (
     <section id="services" className="services-section" ref={containerRef}>
@@ -115,7 +122,7 @@ const Services = () => {
           <span className="section-label">WHAT WE BUILD</span>
           <h2 className="section-title">High-End <span className="text-gradient">AI Solutions</span></h2>
           <p className="section-subtitle">
-            Leveraging cutting-edge AI architecture to solve complex enterprise challenges.
+            Leveraging cutting-edge architecture to solve complex enterprise challenges.
           </p>
         </div>
 
@@ -123,28 +130,23 @@ const Services = () => {
           {servicesData.map((service, i) => (
             <div key={i} className={`service-row ${i % 2 === 0 ? '' : 'reverse'}`}>
               
-              <div 
-                className="service-image-container"
-                onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-                onMouseLeave={(e) => handleMouseLeave(e.currentTarget)}
-              >
-                <div className="service-image-glow" style={{ background: service.color }}></div>
-                <div className="service-image-wrapper">
-                  <img src={service.image} alt={service.title} className="service-img" />
-                  <div className="service-image-overlay"></div>
+              <div className="service-visual-container">
+                <div className="service-visual-glow"></div>
+                <div className="service-visual-wrapper">
+                  <MotionGraphic type={service.type} />
                 </div>
               </div>
 
               <div className="service-content">
-                <div className="service-num" style={{ color: service.color }}>{service.id}</div>
+                <div className="service-num">{service.id}</div>
                 <h3 className="service-title">{service.title}</h3>
-                <p className="service-subtitle" style={{ color: service.color }}>{service.subtitle}</p>
+                <p className="service-subtitle">{service.subtitle}</p>
                 <p className="service-desc">{service.desc}</p>
                 
                 <ul className="service-features-list">
                   {service.features.map((f, idx) => (
                     <li key={idx}>
-                      <span className="feature-icon" style={{ backgroundColor: service.color }}></span>
+                      <span className="feature-icon"></span>
                       {f}
                     </li>
                   ))}

@@ -37,7 +37,7 @@
 }
 .stat-icon { font-size: 1.5rem; margin-bottom: 12px; }
 .stat-value {
-  font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem;
+  font-family: 'Inter', sans-serif; font-size: 2.5rem;
   font-weight: 700; color: #fff; margin-bottom: 4px;
   background: linear-gradient(to right, #fff, var(--light-green));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;

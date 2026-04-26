@@ -1,10 +1,11 @@
 :root {
-  --primary: #00d4ff;      /* Cyan */
-  --secondary: #7b61ff;    /* Purple */
-  --tertiary: #00ff87;     /* Neon Green */
-  --bg: #030305;           /* Very deep dark blue/black */
+  --primary: #528c5e;      /* The exact logo green */
+  --secondary: #6fa87a;    /* Lighter green */
+  --tertiary: #3a5c3e;     /* Darker green */
+  --bg: #030604;           /* Very dark greenish black */
+  --surface: #060a07;      /* Slightly lighter surface */
   --text: #ffffff;
-  --accent: #ff0055;       /* Pink/Red for strong contrast */
+  --accent: #8fd19d;       /* Highlight green */
   --cursor-size: 20px;
 }
 
@@ -19,12 +20,11 @@ body {
   background-color: var(--bg);
   color: var(--text);
   overflow-x: hidden;
-  cursor: none; /* Hide default cursor for custom cursor */
+  cursor: none;
 }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -32,47 +32,36 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--secondary);
-  border-radius: 4px;
+  background: var(--tertiary);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary);
 }
 
-/* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.03em;
 }
 
-a {
+a, button {
   color: inherit;
   text-decoration: none;
-  cursor: none;
-}
-
-button {
   cursor: none;
   font-family: inherit;
 }
 
-.glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
 .text-gradient {
-  background: linear-gradient(to right, var(--primary), var(--tertiary));
+  background: linear-gradient(to right, #fff, var(--primary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-alt {
-  background: linear-gradient(to right, var(--secondary), var(--accent));
+  background: linear-gradient(to right, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

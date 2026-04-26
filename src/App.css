@@ -19,11 +19,11 @@
 }
 .loading-text { display: flex; align-items: baseline; gap: 10px; }
 .loading-brand {
-  font-family: 'Space Grotesk', sans-serif; font-size: 2rem;
+  font-family: 'Inter', sans-serif; font-size: 2rem;
   font-weight: 700; color: #fff; letter-spacing: 0.15em;
 }
 .loading-ai {
-  font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem;
+  font-family: 'Inter', sans-serif; font-size: 1.5rem;
   font-weight: 300; color: var(--primary); letter-spacing: 0.15em;
 }
 .loading-bar-wrapper {
@@ -40,13 +40,13 @@
    GLOBAL SECTION SPACING
    ============================ */
 .section-label {
-  display: inline-block; font-family: 'JetBrains Mono', monospace;
+  display: inline-block; font-family: 'Inter', monospace;
   font-size: 0.75rem; color: var(--primary); letter-spacing: 0.2em;
   background: rgba(82,140,94,0.08); padding: 6px 16px;
   border-radius: 20px; border: 1px solid rgba(82,140,94,0.15); margin-bottom: 20px;
 }
 .section-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: clamp(2rem, 5vw, 3.2rem);
   color: #fff; margin-bottom: 16px; line-height: 1.2;
 }
