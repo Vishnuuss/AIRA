@@ -1,0 +1,46 @@
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  background: #8fd19d;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor-dot.pointer { width: 0; height: 0; }
+.cursor-dot.clicking { width: 4px; height: 4px; }
+
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 40px; height: 40px;
+  border: 1.5px solid rgba(143, 209, 157, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+}
+.cursor-ring.pointer {
+  width: 60px; height: 60px;
+  border-color: rgba(82, 140, 94, 0.8);
+  background: rgba(82, 140, 94, 0.08);
+}
+.cursor-ring.clicking { width: 32px; height: 32px; }
+
+.cursor-ripple {
+  position: fixed;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(143, 209, 157, 0.4);
+  pointer-events: none;
+  z-index: 10002;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 768px) {
+  .cursor-dot, .cursor-ring, .cursor-ripple { display: none; }
+}
