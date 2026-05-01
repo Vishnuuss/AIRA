@@ -1,12 +1,13 @@
 .contact-section {
   position: relative;
-  padding: 180px 20px;
+  padding: 200px 20px;
   background-color: var(--black);
   z-index: 1;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.02);
 }
 
 .contact-glow-bg {
@@ -16,16 +17,30 @@
   transform: translate(-50%, -50%);
   width: 800px;
   height: 800px;
-  background: radial-gradient(circle, rgba(110, 231, 255, 0.08), transparent 60%);
+  background: radial-gradient(circle, rgba(0, 255, 157, 0.1), transparent 60%);
   border-radius: 50%;
   filter: blur(80px);
   pointer-events: none;
-  animation: pulseGlow 4s infinite alternate ease-in-out;
+  animation: pulseContactGlow 4s infinite alternate ease-in-out;
   z-index: 0;
 }
 
-@keyframes pulseGlow {
-  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.6; }
+.contact-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+  mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 10%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes pulseContactGlow {
+  0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.5; }
   100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
 }
 
@@ -43,13 +58,29 @@
   align-items: center;
 }
 
+.terminal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 255, 157, 0.05);
+  border: 1px solid rgba(0, 255, 157, 0.2);
+  color: var(--accent);
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+
 .contact-headline {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 700;
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 800;
   color: var(--text-primary);
   margin-bottom: 24px;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 1.1;
 }
 
@@ -65,31 +96,25 @@
 
 .contact-email-link {
   font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  color: var(--accent);
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  color: var(--white);
   text-decoration: none;
   margin-bottom: 60px;
   display: inline-block;
   position: relative;
-  transition: opacity 0.3s;
+  transition: all 0.3s;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
 }
 
-.contact-email-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 100%;
-  height: 1px;
-  background-color: var(--accent);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.contact-email-link:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
+.contact-email-link:hover {
+  color: var(--accent);
+  border-color: rgba(0, 255, 157, 0.3);
+  background: rgba(0, 255, 157, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 255, 157, 0.1);
 }
 
 .contact-cta-wrapper {
@@ -101,14 +126,16 @@
   color: var(--black);
   border: none;
   padding: 24px 48px;
-  border-radius: 100px;
-  font-family: 'Inter', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
+  border-radius: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   cursor: none;
   position: relative;
   transition: transform 0.1s;
-  box-shadow: 0 0 40px rgba(110, 231, 255, 0.3);
+  box-shadow: 0 0 40px rgba(0, 255, 157, 0.3), inset 0 2px 0 rgba(255, 255, 255, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,13 +147,26 @@
   z-index: 2;
 }
 
+.contact-cta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  transform: translateX(-100%);
+  animation: shimmerBtn 3s infinite;
+}
+
+@keyframes shimmerBtn {
+  100% { transform: translateX(100%); }
+}
+
 @media (max-width: 768px) {
   .contact-section {
     padding: 120px 20px;
   }
   .contact-cta-btn {
-    padding: 20px 40px;
-    font-size: 1.1rem;
+    padding: 20px 24px;
+    font-size: 0.9rem;
     width: 100%;
   }
   .contact-email-link {

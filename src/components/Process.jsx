@@ -6,10 +6,10 @@ import './Process.css';
 gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
-  { num: '01', title: 'Discovery & Analysis', desc: 'We deep-dive into your workflows, data architecture, and business objectives to identify high-impact automation opportunities.' },
-  { num: '02', title: 'Architecture Design', desc: 'We design a scalable, secure AI system architecture tailored to your infrastructure, compliance needs, and growth trajectory.' },
-  { num: '03', title: 'Development & Integration', desc: 'Our engineers build and integrate AI agents, automation pipelines, and RAG systems with your existing tools and platforms.' },
-  { num: '04', title: 'Testing & Optimization', desc: 'Rigorous testing with real-world scenarios ensures reliability, accuracy, and performance before any production deployment.' },
+  { num: '01', title: 'System Discovery', desc: 'We execute a deep-dive analysis of your existing architecture to identify high-leverage automation nodes and operational bottlenecks.' },
+  { num: '02', title: 'Intelligence Design', desc: 'Our engineers architect a zero-trust, highly scalable autonomous infrastructure tailored specifically to your data ecosystem.' },
+  { num: '03', title: 'Pipeline Integration', desc: 'We deploy RAG systems, multi-agent orchestrators, and custom webhooks, seamlessly integrating them into your current stack.' },
+  { num: '04', title: 'Deployment & Scale', desc: 'Rigorous testing precedes production deployment. We monitor latency and hallucination rates to ensure compounding ROI.' },
 ];
 
 const Process = () => {
@@ -55,7 +55,7 @@ const Process = () => {
       } else {
         // Mobile vertical scroll
         const sections = gsap.utils.toArray('.process-step-horizontal');
-        sections.forEach((sec, i) => {
+        sections.forEach((sec) => {
           gsap.fromTo(sec, 
             { opacity: 0, y: 50 },
             { opacity: 1, y: 0, scrollTrigger: { trigger: sec, start: "top 80%" } }
@@ -70,10 +70,10 @@ const Process = () => {
   return (
     <section id="process" className="process-section" ref={sectionRef}>
       <div className="process-header">
-        <span className="section-label">HOW WE WORK</span>
-        <h2 className="section-title">Our <span className="text-gradient">Process</span></h2>
+        <span className="section-label">DEPLOYMENT METHODOLOGY</span>
+        <h2 className="section-title">Architecting <span className="text-gradient">Scale</span></h2>
         <p className="section-subtitle">
-          A proven methodology that delivers results on time and at scale.
+          A deterministic, phased rollout designed to mitigate risk and accelerate implementation velocity.
         </p>
       </div>
 
@@ -81,12 +81,19 @@ const Process = () => {
         <div className="process-horizontal-container" ref={containerRef}>
           <div className="process-connecting-line">
             <div className="process-connecting-line-fill" ref={lineRef}></div>
+            {/* Animated data packets running along the line */}
+            <div className="data-packet dp-1"></div>
+            <div className="data-packet dp-2"></div>
+            <div className="data-packet dp-3"></div>
           </div>
           {steps.map((step, i) => (
             <div key={i} className="process-step-horizontal">
-              <div className="step-connector-dot"></div>
+              <div className="step-connector-dot">
+                <div className="dot-pulse"></div>
+              </div>
               <div className="step-card">
-                <div className="step-num">{step.num}</div>
+                <div className="step-card-glow"></div>
+                <div className="step-num">PHASE {step.num}</div>
                 <h3 className="step-title">{step.title}</h3>
                 <p className="step-desc">{step.desc}</p>
               </div>

@@ -35,6 +35,7 @@
   background: rgba(255, 255, 255, 0.05);
   transform: translateY(-50%);
   z-index: 0;
+  overflow: hidden;
 }
 
 .process-connecting-line-fill {
@@ -44,6 +45,26 @@
   transform-origin: left center;
   transform: scaleX(0);
   box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.data-packet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100px;
+  background: linear-gradient(90deg, transparent, var(--white), transparent);
+  opacity: 0.5;
+  filter: blur(2px);
+  animation: packetFlow 4s linear infinite;
+}
+.dp-1 { animation-delay: 0s; }
+.dp-2 { animation-delay: 1.5s; }
+.dp-3 { animation-delay: 3s; }
+
+@keyframes packetFlow {
+  0% { transform: translateX(-100px); }
+  100% { transform: translateX(calc(300vw - 20vw)); }
 }
 
 .process-step-horizontal {
@@ -56,44 +77,85 @@
 }
 
 .step-connector-dot {
-  width: 16px;
-  height: 16px;
-  background: var(--black);
+  width: 24px;
+  height: 24px;
+  background: var(--surface-2);
   border: 2px solid var(--accent);
   border-radius: 50%;
   margin-bottom: 40px;
   position: relative;
-  box-shadow: 0 0 20px rgba(110, 231, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+}
+
+.dot-pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: dotPulse 2s infinite alternate;
+}
+
+@keyframes dotPulse {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
 }
 
 .step-card {
+  position: relative;
   background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 24px;
   padding: 40px;
   max-width: 500px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.step-card-glow {
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
 }
 
 .step-card:hover {
-  border-color: rgba(110, 231, 255, 0.3);
-  box-shadow: 0 20px 60px rgba(110, 231, 255, 0.08);
-  transform: translateY(-4px);
+  border-color: var(--border-strong);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  transform: translateY(-8px);
+}
+
+.step-card:hover .step-card-glow {
+  opacity: 1;
 }
 
 .step-num {
+  display: inline-block;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1.25rem;
-  color: var(--accent);
-  margin-bottom: 16px;
+  font-size: 0.8rem;
+  color: var(--black);
+  background: var(--accent);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
 
 .step-title {
   font-family: 'Inter', sans-serif;
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: var(--text-primary);
   margin-bottom: 16px;
   letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
 .step-desc {
@@ -126,6 +188,9 @@
   }
   .step-card {
     max-width: 100%;
-    padding: 30px 20px;
+    padding: 30px 24px;
+  }
+  .step-title {
+    font-size: 1.5rem;
   }
 }

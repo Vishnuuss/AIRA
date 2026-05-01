@@ -1,35 +1,39 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Settings, Cpu, Database } from 'lucide-react';
+import { Database, Zap, Cpu, Network } from 'lucide-react';
 import './Services.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const servicesData = [
+const services = [
   {
-    id: '01',
-    title: 'AI Automation',
-    subtitle: 'End-to-End Workflow Intelligence',
-    desc: 'We design and deploy intelligent automation pipelines that eliminate manual bottlenecks, reduce operational costs, and scale your business processes infinitely.',
-    features: ['Cross-platform orchestration', 'Intelligent document processing', 'Automated decision engines', 'Real-time data sync'],
-    icon: <Settings size={24} color="var(--accent)" />
-  },
-  {
-    id: '02',
+    icon: <Cpu size={32} className="service-icon-svg" />,
     title: 'Autonomous Agents',
-    subtitle: 'Digital Workers that Think',
-    desc: 'Custom-built autonomous agents that understand context, make decisions, and execute complex multi-step tasks across your entire digital ecosystem.',
-    features: ['Multi-agent systems', 'Natural language task execution', 'Adaptive learning', 'API integration'],
-    icon: <Cpu size={24} color="var(--accent)" />
+    description: 'Deploy reasoning engines that autonomously execute multi-step workflows, bridging the gap between raw LLM intelligence and actionable business outcomes.',
+    tags: ['LangChain', 'AutoGPT', 'Function Calling'],
+    visual: 'nodes'
   },
   {
-    id: '03',
-    title: 'Enterprise RAG',
-    subtitle: 'Knowledge-Augmented Intelligence',
-    desc: 'Production-grade Retrieval Augmented Generation systems that give your AI secure access to your proprietary data with absolute accuracy.',
-    features: ['Vector database architecture', 'Hybrid semantic search', 'Multi-modal ingestion', 'Zero-hallucination guardrails'],
-    icon: <Database size={24} color="var(--accent)" />
+    icon: <Database size={32} className="service-icon-svg" />,
+    title: 'Enterprise RAG Systems',
+    description: 'Vector-native search architectures that ingest millions of internal documents, delivering hallucination-free intelligence instantly to your workforce.',
+    tags: ['Pinecone', 'Embeddings', 'Semantic Search'],
+    visual: 'radar'
+  },
+  {
+    icon: <Zap size={32} className="service-icon-svg" />,
+    title: 'Zero-Latency Automation',
+    description: 'Event-driven orchestration that eradicates operational bottlenecks. We seamlessly connect disparate APIs into unified, intelligent pipelines.',
+    tags: ['Make', 'n8n', 'Custom Webhooks'],
+    visual: 'pulse'
+  },
+  {
+    icon: <Network size={32} className="service-icon-svg" />,
+    title: 'Strategic Architecture',
+    description: 'We don\'t just deploy tools; we architect scalable AI infrastructure designed for enterprise security, compliance, and exponential growth.',
+    tags: ['System Design', 'Security', 'Scalability'],
+    visual: 'grid'
   }
 ];
 
@@ -38,71 +42,107 @@ const Services = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Header animation
       gsap.fromTo('.services-header > *',
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power2.out',
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1,
           scrollTrigger: { trigger: '.services-header', start: 'top 80%' }
         }
       );
 
-      // Service cards staggered reveal
-      gsap.fromTo('.service-card',
-        { y: 40, opacity: 0 },
-        { 
-          y: 0, opacity: 1, 
-          duration: 0.7, 
-          stagger: 0.08, 
-          ease: 'power3.out',
-          scrollTrigger: { 
-            trigger: '.services-grid', 
-            start: 'top 80%' 
+      const cards = gsap.utils.toArray('.service-card');
+      cards.forEach((card, i) => {
+        gsap.fromTo(card,
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8, delay: i * 0.1, ease: 'power3.out',
+            scrollTrigger: { trigger: '.services-grid', start: 'top 75%' }
           }
-        }
-      );
+        );
+      });
     }, containerRef);
-
     return () => ctx.revert();
   }, []);
+
+  const renderVisual = (type) => {
+    switch(type) {
+      case 'radar':
+        return (
+          <div className="svc-visual radar-visual">
+            <div className="radar-circle rc-1"></div>
+            <div className="radar-circle rc-2"></div>
+            <div className="radar-circle rc-3"></div>
+            <div className="radar-sweep"></div>
+          </div>
+        );
+      case 'nodes':
+        return (
+          <div className="svc-visual nodes-visual">
+            <div className="node n1"></div>
+            <div className="node n2"></div>
+            <div className="node n3"></div>
+            <div className="node-line nl1"></div>
+            <div className="node-line nl2"></div>
+          </div>
+        );
+      case 'pulse':
+        return (
+          <div className="svc-visual pulse-visual">
+            <div className="pulse-line"></div>
+            <div className="pulse-dot"></div>
+          </div>
+        );
+      case 'grid':
+      default:
+        return (
+          <div className="svc-visual grid-visual">
+            <div className="g-cell"></div>
+            <div className="g-cell active"></div>
+            <div className="g-cell"></div>
+            <div className="g-cell"></div>
+            <div className="g-cell"></div>
+            <div className="g-cell active"></div>
+          </div>
+        );
+    }
+  };
 
   return (
     <section id="services" className="services-section" ref={containerRef}>
       <div className="services-container">
+        
         <div className="services-header">
-          <span className="section-label">WHAT WE BUILD</span>
-          <h2 className="section-title">High-End <span className="text-gradient">AI Solutions</span></h2>
-          <p className="section-subtitle">
-            Leveraging cutting-edge architecture to solve complex enterprise challenges.
+          <span className="section-label">OUR SOLUTIONS</span>
+          <h2 className="section-title">Limitless <span className="text-gradient">Orchestration</span></h2>
+          <p className="services-subtitle">
+            We engineer high-fidelity AI systems that transform operational friction into compounding velocity.
           </p>
         </div>
 
         <div className="services-grid">
-          {servicesData.map((service, i) => (
-            <div key={i} className="service-card">
-              <div className="service-icon-container">
-                {service.icon}
-              </div>
-              <div className="service-num">{service.id}</div>
-              <h3 className="service-title">{service.title}</h3>
-              <p className="service-subtitle">{service.subtitle}</p>
-              <p className="service-desc">{service.desc}</p>
+          {services.map((svc, i) => (
+            <div key={i} className="service-card" data-cursor-pointer>
+              <div className="service-card-glow"></div>
               
-              <ul className="service-features-list">
-                {service.features.map((f, idx) => (
-                  <li key={idx}>
-                    <span className="feature-icon"></span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
+              <div className="service-visual-container">
+                {renderVisual(svc.visual)}
+                <div className="service-icon-wrapper">
+                  {svc.icon}
+                </div>
+              </div>
 
-              <button className="service-btn" data-cursor-pointer>
-                <span>Explore Module</span>
-                <div className="service-btn-arrow">↗</div>
-              </button>
+              <div className="service-content">
+                <h3 className="service-title">{svc.title}</h3>
+                <p className="service-desc">{svc.description}</p>
+                
+                <div className="service-tags">
+                  {svc.tags.map((tag, idx) => (
+                    <span key={idx} className="service-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

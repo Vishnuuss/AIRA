@@ -1,12 +1,13 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Shield, Zap, TrendingUp } from 'lucide-react';
 import './About.css';
 
 const stats = [
-  { value: 150, suffix: '+', label: 'Projects Delivered', icon: '📦' },
-  { value: 50, suffix: '+', label: 'Enterprise Clients', icon: '🏢' },
-  { value: 10, suffix: 'M+', label: 'Hours Automated', icon: '⏱️' },
-  { value: 99.9, suffix: '%', label: 'System Uptime', icon: '🟢' },
+  { value: 150, suffix: '+', label: 'Systems Deployed', icon: '⚡' },
+  { value: 50, suffix: '+', label: 'Enterprise Partners', icon: '🏢' },
+  { value: 10, suffix: 'M+', label: 'Automated Operations', icon: '🔄' },
+  { value: 99.9, suffix: '%', label: 'Infrastructure Uptime', icon: '🟢' },
 ];
 
 const AnimatedCounter = ({ value, suffix, inView }) => {
@@ -37,39 +38,44 @@ const About = () => {
 
   return (
     <section id="about" className="about-section" ref={ref}>
+      <div className="about-glow"></div>
+      
       <div className="about-container">
         <div className="about-content">
           <motion.div className="about-text"
             initial={{ opacity: 0, y: 40 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}>
-            <span className="section-label">WHY AIRA AI</span>
+            
+            <div className="section-label-wrapper">
+              <span className="section-label">THE AIRA ADVANTAGE</span>
+            </div>
+            
             <h2 className="section-title">
               We Don't Just Build AI.<br />
               <span className="text-gradient">We Architect Intelligence.</span>
             </h2>
+            
             <p className="about-description">
-              AIRA AI is an elite AI agency specializing in enterprise-grade automation,
-              autonomous agent systems, and production RAG architectures. We partner with
-              forward-thinking companies to transform their operations through intelligent
-              systems that learn, adapt, and scale.
+              AIRA AI is an elite intelligence agency specializing in enterprise-grade automation, autonomous reasoning agents, and production-ready RAG architectures. We partner with forward-thinking organizations to transform their operational friction into compounding velocity.
             </p>
+            
             <p className="about-description">
-              Our team combines deep expertise in machine learning, software engineering,
-              and business strategy to deliver solutions that create measurable ROI from day one.
+              Our engineering team merges deep expertise in machine learning, distributed systems, and business strategy to deliver deterministic, secure AI infrastructure that generates measurable ROI from day one.
             </p>
+            
             <div className="about-badges">
               <div className="about-badge">
-                <span className="badge-icon">🔒</span>
-                <span>Enterprise Security</span>
+                <Shield size={16} className="badge-icon" />
+                <span>Zero-Trust Security</span>
               </div>
               <div className="about-badge">
-                <span className="badge-icon">🚀</span>
-                <span>Rapid Deployment</span>
+                <Zap size={16} className="badge-icon" />
+                <span>Zero-Latency Execution</span>
               </div>
               <div className="about-badge">
-                <span className="badge-icon">📊</span>
-                <span>Data-Driven</span>
+                <TrendingUp size={16} className="badge-icon" />
+                <span>Compounding ROI</span>
               </div>
             </div>
           </motion.div>
@@ -84,6 +90,7 @@ const About = () => {
                   initial={{ opacity: 0, y: 30 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.3 + i * 0.1, duration: 0.6 }}>
+                  <div className="stat-glow"></div>
                   <span className="stat-icon">{stat.icon}</span>
                   <span className="stat-value">
                     <AnimatedCounter value={stat.value} suffix={stat.suffix} inView={isInView} />

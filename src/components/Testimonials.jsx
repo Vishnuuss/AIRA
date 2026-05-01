@@ -1,25 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import './Testimonials.css';
 
 const testimonials = [
   {
-    quote: "AIRA AI didn't just automate our workflows; they fundamentally re-architected how our data moves. The multi-agent system they built replaced three entire departments of manual data entry while reducing errors to zero.",
+    quote: "AIRA didn't just automate workflows; they completely re-architected our data pipeline. The autonomous agents they deployed replaced entire legacy systems, driving our error rate to zero while accelerating execution by 10x.",
     author: "Sarah Jenkins",
-    role: "CTO, TechVision Global",
-    company: "TechVision"
+    role: "CTO",
+    company: "TechVision Global"
   },
   {
-    quote: "The Enterprise RAG solution provided by AIRA is mind-blowing. Our legal team can now query millions of documents securely and get perfect, hallucination-free answers in seconds. It's a game-changer.",
+    quote: "Their Enterprise RAG architecture is unparalleled. Our analysts now query millions of compliance documents securely with zero-latency, hallucination-free intelligence. A definitive strategic advantage.",
     author: "David Chen",
-    role: "Managing Partner, Elevate Law",
-    company: "Elevate Law"
+    role: "Managing Partner",
+    company: "Elevate Systems"
   },
   {
-    quote: "We brought them a logistical nightmare involving five different legacy systems. Within weeks, AIRA's automation pipeline had them communicating flawlessly. Their engineers are top-tier.",
+    quote: "Integrating our disparate APIs seemed impossible until AIRA built a custom automation infrastructure. Flawless execution, zero trust security, and absolute reliability from day one.",
     author: "Michael Ross",
-    role: "VP Operations, Nexus Logistics",
+    role: "VP Operations",
     company: "Nexus Logistics"
   }
 ];
@@ -37,7 +37,7 @@ const Testimonials = () => {
 
   useEffect(() => {
     if (isHovered) return;
-    const interval = setInterval(() => autoPlayRef.current(), 5000);
+    const interval = setInterval(() => autoPlayRef.current(), 6000);
     return () => clearInterval(interval);
   }, [isHovered]);
 
@@ -46,10 +46,12 @@ const Testimonials = () => {
 
   return (
     <section id="testimonials" className="testimonials-section">
+      <div className="testimonials-bg-grid"></div>
+      
       <div className="testimonials-container">
         <div className="test-header">
-          <span className="section-label">CLIENT SUCCESS</span>
-          <h2 className="section-title">Trusted by <span className="text-gradient">Industry Leaders</span></h2>
+          <span className="section-label">PARTNER OUTCOMES</span>
+          <h2 className="section-title">Verified <span className="text-gradient">Impact</span></h2>
         </div>
 
         <div 
@@ -66,20 +68,27 @@ const Testimonials = () => {
               <motion.div 
                 key={currentIndex}
                 className="testimonial-card glass-card"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               >
-                <div className="quote-mark">"</div>
+                <div className="card-top-glow"></div>
+                <Quote size={40} className="quote-icon" />
+                
                 <p className="testimonial-quote">{testimonials[currentIndex].quote}</p>
+                
                 <div className="testimonial-author-area">
                   <div className="author-avatar">
                     {testimonials[currentIndex].author.charAt(0)}
                   </div>
                   <div className="author-info">
                     <h4 className="author-name">{testimonials[currentIndex].author}</h4>
-                    <p className="author-role">{testimonials[currentIndex].role}</p>
+                    <p className="author-role">
+                      <span className="role-text">{testimonials[currentIndex].role}</span>
+                      <span className="role-divider">//</span>
+                      <span className="company-text">{testimonials[currentIndex].company}</span>
+                    </p>
                   </div>
                 </div>
               </motion.div>

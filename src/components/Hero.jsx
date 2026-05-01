@@ -1,198 +1,141 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ShieldAlert, Activity, Cpu } from 'lucide-react';
 import './Hero.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const heroRef = useRef(null);
-  const headlineLine1Ref = useRef(null);
-  const headlineLine2Ref = useRef(null);
-  const canvasRef = useRef(null);
-  
+  const titleRef = useRef(null);
+  const floatingCardsRef = useRef(null);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-      // Preloader simulation (if no global preloader, we animate hero entry)
+      // Core elements entrance
       tl.fromTo('.hero-micro-label', 
         { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+        { y: 0, opacity: 1, duration: 1 },
         0.5
-      );
-
-      const words1 = headlineLine1Ref.current.children;
-      const words2 = headlineLine2Ref.current.children;
-
-      tl.fromTo(words1,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.04, ease: 'power3.out' },
+      )
+      .fromTo('.hero-title-line',
+        { y: 50, opacity: 0, rotateX: -20 },
+        { y: 0, opacity: 1, rotateX: 0, duration: 1.2, stagger: 0.1, transformOrigin: 'bottom center' },
         "-=0.8"
       )
-      .fromTo(words2,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.04, ease: 'power3.out' },
-        "-=0.8"
-      );
-
-      tl.fromTo('.hero-subheading',
+      .fromTo('.hero-subtitle',
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 },
-        "-=0.6"
+        "-=0.8"
       )
       .fromTo('.hero-ctas',
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 },
         "-=0.8"
-      )
-      .fromTo('.hero-scroll-indicator',
-        { opacity: 0 },
-        { opacity: 1, duration: 1 },
-        "-=0.4"
       );
 
+      // Floating spatial cards entrance
+      tl.fromTo('.spatial-card',
+        { scale: 0.8, opacity: 0, y: 30 },
+        { scale: 1, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'back.out(1.5)' },
+        "-=1"
+      );
+
+      // Mouse Parallax for Spatial Cards
+      const handleMouseMove = (e) => {
+        const { clientX, clientY } = e;
+        const xPos = (clientX / window.innerWidth - 0.5);
+        const yPos = (clientY / window.innerHeight - 0.5);
+
+        gsap.to('.spatial-card-1', { x: xPos * 40, y: yPos * 40, duration: 1, ease: 'power2.out' });
+        gsap.to('.spatial-card-2', { x: xPos * -30, y: yPos * -50, duration: 1, ease: 'power2.out' });
+        gsap.to('.spatial-card-3', { x: xPos * 50, y: yPos * -30, duration: 1, ease: 'power2.out' });
+        gsap.to('.hero-bg-glow', { x: xPos * 100, y: yPos * 100, duration: 2, ease: 'power1.out' });
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Advanced Particle Field (Option A)
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let animId;
-    let particles = [];
-    
-    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2, targetX: window.innerWidth / 2, targetY: window.innerHeight / 2 };
-    
-    const initParticles = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      
-      const count = window.innerWidth < 768 ? 150 : 400; // Less on mobile
-      particles = [];
-      for (let i = 0; i < count; i++) {
-        const z = Math.random() * 100; // Depth
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          z: z,
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: (Math.random() - 0.5) * 0.2,
-          size: (1 - z/100) * 2.5 + 0.5,
-          opacity: (1 - z/100) * 0.6 + 0.1,
-        });
-      }
-    };
-    
-    initParticles();
-    
-    window.addEventListener('resize', initParticles);
-    
-    const handleMouseMove = (e) => {
-      mouse.targetX = e.clientX;
-      mouse.targetY = e.clientY;
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Smooth mouse follow
-      mouse.x += (mouse.targetX - mouse.x) * 0.05;
-      mouse.y += (mouse.targetY - mouse.y) * 0.05;
-      
-      const parallaxX = (mouse.x / canvas.width - 0.5) * 50;
-      const parallaxY = (mouse.y / canvas.height - 0.5) * 50;
-
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        
-        // Wrap around
-        if (p.x < -50) p.x = canvas.width + 50;
-        if (p.x > canvas.width + 50) p.x = -50;
-        if (p.y < -50) p.y = canvas.height + 50;
-        if (p.y > canvas.height + 50) p.y = -50;
-
-        const pX = p.x + parallaxX * (p.z / 100);
-        const pY = p.y + parallaxY * (p.z / 100);
-
-        ctx.beginPath();
-        ctx.arc(pX, pY, p.size, 0, Math.PI * 2);
-        
-        // Electric Cyan: #6ee7ff (approx hsl(190, 100%, 71%))
-        ctx.fillStyle = `hsla(190, 100%, 71%, ${p.opacity})`;
-        
-        // Depth of field blur simulation
-        if (p.z > 70) {
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = `hsla(190, 100%, 71%, ${p.opacity})`;
-        } else {
-          ctx.shadowBlur = 0;
-        }
-        
-        ctx.fill();
-      });
-      
-      animId = requestAnimationFrame(draw);
-    };
-    
-    draw();
-    
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('resize', initParticles);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, []);
-
-  const headlineWord = (text) => text.split(' ').map((word, i) => (
-    <span key={i} className="hero-word" style={{ display: 'inline-block', paddingRight: '0.25em' }}>
-      {word}
-    </span>
-  ));
-
   return (
-    <section id="hero" className="hero" ref={heroRef}>
-      {/* Background FX */}
-      <canvas ref={canvasRef} className="hero-particle-canvas" />
-      <div className="hero-bg-gradient"></div>
+    <section id="hero" className="hero-section" ref={heroRef}>
+      <div className="hero-bg-glow"></div>
+      <div className="hero-grid-overlay"></div>
+
+      {/* Floating Spatial UI Modules */}
+      <div className="spatial-cards-container" ref={floatingCardsRef}>
+        <div className="spatial-card spatial-card-1">
+          <div className="sc-header">
+            <Activity size={16} color="var(--accent)" />
+            <span>System Status</span>
+          </div>
+          <div className="sc-body">
+            <div className="sc-value text-gradient">Online</div>
+            <div className="sc-graph">
+              <div className="bar b1"></div>
+              <div className="bar b2"></div>
+              <div className="bar b3"></div>
+              <div className="bar b4"></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="spatial-card spatial-card-2">
+          <div className="sc-header">
+            <Cpu size={16} color="var(--accent)" />
+            <span>Agents Active</span>
+          </div>
+          <div className="sc-body">
+            <div className="sc-value">1,402</div>
+            <div className="sc-subtext">+12% this week</div>
+          </div>
+        </div>
+
+        <div className="spatial-card spatial-card-3">
+          <div className="sc-header">
+            <ShieldAlert size={16} color="var(--accent)" />
+            <span>Threats Blocked</span>
+          </div>
+          <div className="sc-body">
+            <div className="sc-value">Zero</div>
+            <div className="sc-badge">Secure</div>
+          </div>
+        </div>
+      </div>
 
       <div className="hero-content">
-        <div className="hero-micro-label">[ AI-POWERED SOLUTIONS ]</div>
+        <div className="hero-micro-label">
+          <span className="pulsing-dot"></span>
+          Enterprise AI Infrastructure
+        </div>
         
-        <h1 className="hero-headline">
-          <div className="hero-headline-line" ref={headlineLine1Ref}>
-            {headlineWord("Intelligent Automation.")}
-          </div>
-          <div className="hero-headline-line" ref={headlineLine2Ref}>
-            {headlineWord("Engineered for Growth.")}
-          </div>
+        <h1 className="hero-title" ref={titleRef}>
+          <div className="hero-title-line">Redefining</div>
+          <div className="hero-title-line">Enterprise <span className="text-gradient">Scalability</span>.</div>
         </h1>
         
-        <p className="hero-subheading">
-          AIRA AI Solutions builds precision-crafted AI systems that eliminate inefficiency, accelerate decision-making, and compound your business advantage — all without the complexity.
+        <p className="hero-subtitle">
+          Engineered with autonomous intelligence to multiply your operational bandwidth. 
+          Deploy zero-latency agents and RAG pipelines that execute flawlessly.
         </p>
 
         <div className="hero-ctas">
           <button className="btn-primary" data-cursor-pointer
             onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
-            Explore Solutions
+            <div className="btn-glow"></div>
+            <span>Initialize Systems</span>
           </button>
           <button className="btn-secondary" data-cursor-pointer
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-            Watch Demo
+            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
+            View Architecture
           </button>
         </div>
-      </div>
-      
-      <div className="hero-scroll-indicator">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
       </div>
     </section>
   );

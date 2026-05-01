@@ -1,13 +1,30 @@
 .testimonials-section {
   position: relative;
-  padding: 140px 20px;
-  background-color: var(--black);
+  padding: 160px 20px;
+  background-color: var(--surface);
   z-index: 1;
+  overflow: hidden;
+}
+
+.testimonials-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 157, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 157, 0.02) 1px, transparent 1px);
+  background-size: 100px 100px;
+  background-position: center center;
+  mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 20%, transparent 80%);
+  z-index: 0;
+  pointer-events: none;
 }
 
 .testimonials-container {
   max-width: 1000px;
   margin: 0 auto;
+  position: relative;
+  z-index: 10;
 }
 
 .test-header {
@@ -20,45 +37,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 24px;
 }
 
 .carousel-viewport {
   width: 100%;
   max-width: 800px;
-  overflow: hidden;
   position: relative;
-  min-height: 350px;
+  min-height: 380px;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: 24px;
   padding: 50px;
   position: absolute;
   width: 100%;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
 }
 
-.quote-mark {
-  font-family: 'Inter', sans-serif;
-  font-size: 5rem;
+.card-top-glow {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.5;
+}
+
+.quote-icon {
   color: var(--accent);
-  opacity: 0.3;
-  line-height: 0;
-  margin-bottom: 30px;
-  margin-top: 20px;
+  opacity: 0.4;
+  margin-bottom: 24px;
 }
 
 .testimonial-quote {
   font-family: 'Inter', sans-serif;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   color: var(--text-primary);
   line-height: 1.7;
-  font-weight: 300;
+  font-weight: 400;
   margin-bottom: 40px;
 }
 
@@ -66,20 +85,23 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 24px;
 }
 
 .author-avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: var(--accent);
-  color: var(--black);
+  background: rgba(0, 255, 157, 0.1);
+  color: var(--accent);
+  border: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .author-name {
@@ -87,70 +109,89 @@
   font-size: 1.1rem;
   color: var(--white);
   margin-bottom: 4px;
+  font-weight: 600;
 }
 
 .author-role {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-text {
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+}
+
+.role-divider {
+  color: var(--accent);
+  opacity: 0.5;
+}
+
+.company-text {
+  color: var(--white);
 }
 
 .carousel-btn {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-2);
   border: 1px solid var(--border);
-  color: var(--white);
-  width: 48px;
-  height: 48px;
+  color: var(--text-primary);
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: none;
-  transition: all 0.3s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 10;
 }
 
 .carousel-btn:hover {
-  background: var(--surface-2);
-  border-color: rgba(110, 231, 255, 0.3);
+  background: rgba(0, 255, 157, 0.05);
+  border-color: var(--border-strong);
   color: var(--accent);
+  transform: scale(1.1);
 }
 
 .carousel-indicators {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 30px;
+  gap: 12px;
+  margin-top: 40px;
 }
 
 .indicator {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   cursor: none;
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .indicator.active {
   background: var(--accent);
-  width: 24px;
+  width: 32px;
   border-radius: 4px;
+  box-shadow: 0 0 10px var(--accent);
 }
 
 @media (max-width: 768px) {
+  .testimonials-section {
+    padding: 100px 20px;
+  }
   .glass-card {
-    padding: 30px 20px;
+    padding: 30px 24px;
   }
   .testimonial-quote {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
   }
   .carousel-viewport {
-    min-height: 400px;
+    min-height: 420px;
   }
   .carousel-btn {
-    display: none; /* Hide buttons on mobile, maybe rely on auto-play */
+    display: none;
   }
 }

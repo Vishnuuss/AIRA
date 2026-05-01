@@ -1,5 +1,6 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Terminal } from 'lucide-react';
 import './Contact.css';
 
 const Contact = () => {
@@ -17,11 +18,10 @@ const Contact = () => {
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
       
-      // Limit the movement
-      const xMove = x * 0.3;
-      const yMove = y * 0.3;
+      const xMove = x * 0.2;
+      const yMove = y * 0.2;
 
-      btn.style.transform = `translate(${xMove}px, ${yMove}px) scale(1.05)`;
+      btn.style.transform = `translate(${xMove}px, ${yMove}px) scale(1.02)`;
     };
 
     const handleMouseLeave = () => {
@@ -40,6 +40,7 @@ const Contact = () => {
   return (
     <section id="contact" className="contact-section" ref={ref}>
       <div className="contact-glow-bg" />
+      <div className="contact-grid-overlay" />
       
       <div className="contact-container">
         <motion.div className="contact-content-centered"
@@ -47,10 +48,13 @@ const Contact = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
           
-          <span className="section-label">READY TO SCALE?</span>
+          <div className="terminal-badge">
+            <Terminal size={14} />
+            <span>INITIATE_PROTOCOL</span>
+          </div>
           
           <h2 className="contact-headline">
-            Start Your <span className="text-gradient">AI Transformation</span>
+            Ready to <span className="text-gradient">Automate?</span>
           </h2>
           
           <p className="contact-description">
@@ -63,7 +67,7 @@ const Contact = () => {
 
           <div className="contact-cta-wrapper">
             <button ref={buttonRef} className="contact-cta-btn" data-cursor-pointer>
-              <span>Book Strategy Call</span>
+              <span>Initialize System Discovery</span>
             </button>
           </div>
 
