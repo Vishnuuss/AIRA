@@ -47,21 +47,25 @@
 }
 
 .navbar-logo-img {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
+  mix-blend-mode: screen; /* Removes black background */
+  filter: brightness(1.5) drop-shadow(0 0 10px rgba(0, 255, 157, 0.8));
 }
 
 .navbar-logo-text {
   font-family: 'Inter', sans-serif;
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 800;
   letter-spacing: 0.1em;
   color: var(--white);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .navbar-logo-ai {
   color: var(--accent);
   font-weight: 400;
+  text-shadow: 0 0 10px var(--accent-glow);
 }
 
 .navbar-links {

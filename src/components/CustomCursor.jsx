@@ -7,7 +7,7 @@ const CustomCursor = () => {
   const cursorY = useMotionValue(-100);
   const [isPointer, setIsPointer] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
-  const [clicks, setClicks] = useState([]);
+  const [bursts, setBursts] = useState([]);
 
   const springConfig = { damping: 25, stiffness: 700 };
   const cursorXSpring = useSpring(cursorX, springConfig);
@@ -18,10 +18,22 @@ const CustomCursor = () => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
     };
+    
     const handleMouseDown = (e) => {
       setIsClicking(true);
-      setClicks(prev => [...prev, { id: Date.now(), x: e.clientX, y: e.clientY }]);
+      // Create a new burst of particles on click
+      const newBurst = {
+        id: Date.now(),
+        x: e.clientX,
+        y: e.clientY,
+        particles: Array.from({ length: 8 }).map((_, i) => ({
+          id: i,
+          angle: (i * 360) / 8, // 8 particles in a circle
+        }))
+      };
+      setBursts(prev => [...prev, newBurst]);
     };
+    
     const handleMouseUp = () => setIsClicking(false);
 
     window.addEventListener('mousemove', moveCursor);
@@ -55,8 +67,8 @@ const CustomCursor = () => {
     return () => { cleanup(); observer.disconnect(); };
   }, []);
 
-  const removeClick = useCallback((id) => {
-    setClicks(prev => prev.filter(c => c.id !== id));
+  const removeBurst = useCallback((id) => {
+    setBursts(prev => prev.filter(b => b.id !== id));
   }, []);
 
   return (
@@ -65,13 +77,29 @@ const CustomCursor = () => {
         style={{ x: cursorX, y: cursorY }} />
       <motion.div className={`cursor-ring ${isPointer ? 'pointer' : ''} ${isClicking ? 'clicking' : ''}`}
         style={{ x: cursorXSpring, y: cursorYSpring }} />
-      {clicks.map(click => (
-        <motion.div key={click.id} className="cursor-ripple"
-          style={{ left: click.x, top: click.y }}
-          initial={{ scale: 0, opacity: 0.5 }}
-          animate={{ scale: 4, opacity: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          onAnimationComplete={() => removeClick(click.id)} />
+      
+      {bursts.map(burst => (
+        <div key={burst.id} className="burst-container" style={{ left: burst.x, top: burst.y }}>
+          {burst.particles.map(particle => {
+            const distance = 40;
+            const rad = (particle.angle * Math.PI) / 180;
+            const destX = Math.cos(rad) * distance;
+            const destY = Math.sin(rad) * distance;
+
+            return (
+              <motion.div
+                key={particle.id}
+                className="burst-particle"
+                initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
+                animate={{ x: destX, y: destY, scale: 0, opacity: 0 }}
+                transition={{ duration: 0.6, ease: 'easeOut' }}
+                onAnimationComplete={() => {
+                  if (particle.id === 7) removeBurst(burst.id); // clean up after last particle
+                }}
+              />
+            );
+          })}
+        </div>
       ))}
     </>
   );

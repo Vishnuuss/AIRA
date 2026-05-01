@@ -116,13 +116,13 @@ const Hero = () => {
         </div>
         
         <h1 className="hero-title" ref={titleRef}>
-          <div className="hero-title-line">Automate Your</div>
-          <div className="hero-title-line">Enterprise <span className="text-gradient">Operations</span>.</div>
+          <div className="hero-title-line">AI That Does The</div>
+          <div className="hero-title-line">Work <span className="text-gradient">For You</span>.</div>
         </h1>
         
         <p className="hero-subtitle">
-          We build secure AI agents and intelligent systems that solve complex bottlenecks, 
-          eliminate manual workflows, and scale your business effortlessly.
+          We build smart AI agents that automate your daily tasks, 
+          save you time, and help your business grow fast.
         </p>
 
         <div className="hero-ctas">
