@@ -43,7 +43,9 @@ const Problem = () => {
         
         <div className="problem-content">
           <div className="problem-text-reveal-container">
-            <h2 className="problem-title problem-text-reveal">Bring Us Your Biggest Challenges.</h2>
+            <h2 className="problem-title problem-text-reveal" style={{ fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
+              Struggling with slow workflows and disconnected systems?
+            </h2>
           </div>
           <div className="problem-text-reveal-container">
             <h2 className="problem-title-highlight problem-text-reveal text-gradient-alt">
@@ -53,8 +55,8 @@ const Problem = () => {
           
           <div className="problem-text-reveal-container">
             <p className="problem-desc problem-text-reveal">
-              Don't settle for generic tools. We engineer custom AI agents and intelligent systems 
-              designed specifically to eliminate your operational bottlenecks and accelerate your growth.
+              Don't let manual tasks and high error rates limit your growth. We engineer custom AI agents 
+              that eliminate operational bottlenecks, connect your data securely, and automate your most complex workflows.
             </p>
           </div>
 
