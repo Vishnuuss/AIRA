@@ -40,8 +40,8 @@ const About = () => {
       <div className="about-container">
         <div className="about-content">
           <motion.div className="about-text"
-            initial={{ opacity: 0, x: -40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7 }}>
             <span className="section-label">WHY AIRA AI</span>
             <h2 className="section-title">
@@ -74,24 +74,24 @@ const About = () => {
             </div>
           </motion.div>
 
-          <motion.div className="about-stats-grid"
-            initial={{ opacity: 0, x: 40 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+          <motion.div className="about-visual-container"
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.7, delay: 0.2 }}>
-            {stats.map((stat, i) => (
-              <motion.div key={i} className="stat-card"
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: 0.3 + i * 0.1, duration: 0.6 }}
-                whileHover={{ y: -5, borderColor: 'rgba(82,140,94,0.3)' }}
-                data-cursor-pointer>
-                <span className="stat-icon">{stat.icon}</span>
-                <span className="stat-value">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} inView={isInView} />
-                </span>
-                <span className="stat-label">{stat.label}</span>
-              </motion.div>
-            ))}
+            <div className="about-stats-grid">
+              {stats.map((stat, i) => (
+                <motion.div key={i} className="stat-card"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ delay: 0.3 + i * 0.1, duration: 0.6 }}>
+                  <span className="stat-icon">{stat.icon}</span>
+                  <span className="stat-value">
+                    <AnimatedCounter value={stat.value} suffix={stat.suffix} inView={isInView} />
+                  </span>
+                  <span className="stat-label">{stat.label}</span>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>

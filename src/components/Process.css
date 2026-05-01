@@ -1,68 +1,131 @@
 .process-section {
-  position: relative; padding: 120px 20px; z-index: 1;
-}
-.process-container { max-width: 1000px; margin: 0 auto; }
-.process-header { text-align: center; margin-bottom: 80px; }
-
-.process-timeline { position: relative; }
-
-.timeline-line {
-  position: absolute; left: 50%; top: 0; bottom: 0;
-  width: 2px; background: linear-gradient(to bottom, transparent, var(--primary), transparent);
-  transform-origin: top; opacity: 0.3;
+  position: relative;
+  background-color: var(--black);
+  z-index: 1;
+  padding-top: 140px;
 }
 
-.process-step {
-  display: flex; align-items: flex-start; margin-bottom: 48px;
+.process-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 80px;
+  padding: 0 20px;
+}
+
+.process-scroll-wrapper {
+  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.process-horizontal-container {
+  display: flex;
+  width: 400vw;
+  padding-left: 10vw;
   position: relative;
 }
-.process-step.left { flex-direction: row; padding-right: calc(50% + 40px); }
-.process-step.right { flex-direction: row-reverse; padding-left: calc(50% + 40px); }
 
-.step-connector {
-  position: absolute; left: 50%; top: 20px;
-  transform: translateX(-50%);
+.process-connecting-line {
+  position: absolute;
+  top: 50%;
+  left: 10vw;
+  width: calc(300vw - 20vw);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-50%);
+  z-index: 0;
 }
-.step-dot {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: var(--primary);
-  box-shadow: 0 0 20px rgba(82,140,94,0.4);
-  border: 2px solid var(--bg);
+
+.process-connecting-line-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.process-step-horizontal {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.step-connector-dot {
+  width: 16px;
+  height: 16px;
+  background: var(--black);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  margin-bottom: 40px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(110, 231, 255, 0.4);
 }
 
 .step-card {
-  width: 100%; padding: 28px; border-radius: 16px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.06);
-  transition: all 0.3s;
-}
-.step-card:hover {
-  background: rgba(82,140,94,0.03);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+  max-width: 500px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.step-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 12px;
+.step-card:hover {
+  border-color: rgba(110, 231, 255, 0.3);
+  box-shadow: 0 20px 60px rgba(110, 231, 255, 0.08);
+  transform: translateY(-4px);
 }
-.step-icon { font-size: 1.5rem; }
+
 .step-num {
-  font-family: 'Inter', monospace; font-size: 0.75rem;
-  color: var(--primary); opacity: 0.7; letter-spacing: 0.05em;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
+  color: var(--accent);
+  margin-bottom: 16px;
 }
+
 .step-title {
-  font-family: 'Inter', sans-serif; font-size: 1.2rem;
-  color: #fff; margin-bottom: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
 }
+
 .step-desc {
-  font-size: 0.88rem; color: rgba(255,255,255,0.4); line-height: 1.7;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
 }
 
 @media (max-width: 768px) {
-  .process-section { padding: 80px 20px; }
-  .timeline-line { left: 20px; }
-  .process-step.left, .process-step.right {
-    flex-direction: row; padding: 0 0 0 50px;
+  .process-scroll-wrapper {
+    height: auto;
+    display: block;
+    padding: 0 1.25rem 100px;
   }
-  .step-connector { left: 20px; }
+  .process-horizontal-container {
+    width: 100%;
+    padding-left: 0;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .process-connecting-line {
+    display: none;
+  }
+  .process-step-horizontal {
+    width: 100%;
+  }
+  .step-connector-dot {
+    display: none;
+  }
+  .step-card {
+    max-width: 100%;
+    padding: 30px 20px;
+  }
 }
