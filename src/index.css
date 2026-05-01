@@ -1,12 +1,23 @@
 :root {
-  --primary: #528c5e;      /* The exact logo green */
-  --secondary: #6fa87a;    /* Lighter green */
-  --tertiary: #3a5c3e;     /* Darker green */
-  --bg: #030604;           /* Very dark greenish black */
-  --surface: #060a07;      /* Slightly lighter surface */
-  --text: #ffffff;
-  --accent: #8fd19d;       /* Highlight green */
-  --cursor-size: 20px;
+  --black:        #080808;
+  --surface:      #0f0f0f;
+  --surface-2:    #161616;
+  --border:       rgba(255,255,255,0.07);
+  --accent:       #6ee7ff;          /* electric cyan — primary accent */
+  --accent-warm:  #a78bfa;          /* violet — secondary accent */
+  --accent-glow:  rgba(110,231,255,0.15);
+  --text-primary: #f0f0f0;
+  --text-muted:   #6b7280;
+  --text-subtle:  #374151;
+  --white:        #ffffff;
+
+  /* Legacy variable mappings to maintain compatibility with other components temporarily */
+  --primary:      var(--accent);
+  --secondary:    var(--accent-warm);
+  --tertiary:     var(--surface-2);
+  --bg:           var(--black);
+  --text:         var(--text-primary);
+  --cursor-size:  20px;
 }
 
 * {

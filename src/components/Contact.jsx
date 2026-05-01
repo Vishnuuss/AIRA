@@ -35,7 +35,7 @@ const Contact = () => {
               <span className="contact-item-icon">📧</span>
               <div>
                 <span className="contact-item-label">Email</span>
-                <span className="contact-item-value">hello@aira-ai.com</span>
+                <span className="contact-item-value">elevatexvishnu@gmail.com</span>
               </div>
             </div>
             <div className="contact-item">

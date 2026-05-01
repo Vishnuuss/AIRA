@@ -16,32 +16,28 @@ import './App.css';
 
 const LoadingScreen = ({ onComplete }) => (
   <motion.div className="loading-screen"
-    exit={{ opacity: 0 }} transition={{ duration: 0.6, ease: 'easeInOut' }}>
+    initial={{ y: 0 }}
+    exit={{ y: '-100%' }} 
+    transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+    style={{ backgroundColor: '#080808' }}>
     <motion.div className="loading-logo-wrapper"
-      initial={{ scale: 0.5, opacity: 0, rotate: -90 }}
-      animate={{ scale: 1, opacity: 1, rotate: 0 }}
+      initial={{ scale: 0.85, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}>
-      <img src="/logo-icon.png" alt="AIRA AI" className="loading-logo" />
-      <motion.div className="loading-ring"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 2, repeat: Infinity, ease: 'linear' }} />
+      <img src="/logo-icon.png" alt="AIRA AI Solutions" className="loading-logo" />
     </motion.div>
-    <motion.div className="loading-text"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5, duration: 0.6 }}>
-      <span className="loading-brand">AIRA</span>
-      <span className="loading-ai">AI</span>
-    </motion.div>
+    
     <motion.div className="loading-bar-wrapper"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 0.8 }}>
+      transition={{ delay: 0.3, duration: 0.5 }}>
       <motion.div className="loading-bar"
         initial={{ width: '0%' }}
         animate={{ width: '100%' }}
-        transition={{ duration: 2, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        onAnimationComplete={onComplete} />
+        transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+        onAnimationComplete={() => {
+          setTimeout(onComplete, 200); // Tiny pause before sliding up
+        }} />
     </motion.div>
   </motion.div>
 );

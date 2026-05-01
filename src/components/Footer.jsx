@@ -34,20 +34,24 @@ const Footer = () => {
             </div>
           </div>
 
-          {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title} className="footer-column">
-              <h4 className="footer-column-title">{title}</h4>
+            <div className="footer-column">
+              <h4 className="footer-column-title">Company</h4>
               <ul>
-                {links.map((link, i) => (
-                  <li key={i}>
-                    <motion.a href="#" whileHover={{ x: 4, color: '#8fd19d' }}
-                      data-cursor-pointer>{link}</motion.a>
-                  </li>
-                ))}
+                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>About Us</motion.a></li>
+                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>Process</motion.a></li>
+                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>Case Studies</motion.a></li>
+                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>Careers</motion.a></li>
               </ul>
             </div>
-          ))}
-        </div>
+
+            <div className="footer-column">
+              <h4 className="footer-column-title">Contact</h4>
+              <ul>
+                <li><motion.a href="mailto:elevatexvishnu@gmail.com" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>elevatexvishnu@gmail.com</motion.a></li>
+                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>Book Strategy Call</motion.a></li>
+              </ul>
+            </div>
+          </div>
 
         <div className="footer-bottom">
           <p>© {year} AIRA AI. All rights reserved.</p>

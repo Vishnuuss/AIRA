@@ -7,124 +7,192 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Hero = () => {
   const heroRef = useRef(null);
-  const logoRef = useRef(null);
-  const titleRef = useRef(null);
-
+  const headlineLine1Ref = useRef(null);
+  const headlineLine2Ref = useRef(null);
+  const canvasRef = useRef(null);
+  
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Cinematic entrance
       const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-      tl.fromTo('.hero-grid-bg', 
-        { scale: 1.1, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 2.5 }
-      )
-      .fromTo(logoRef.current,
-        { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.5 },
-        "-=1.5"
-      )
-      .fromTo('.hero-title-char',
-        { y: 50, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, stagger: 0.03 },
-        "-=1"
-      )
-      .fromTo('.hero-tagline',
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1 },
+      // Preloader simulation (if no global preloader, we animate hero entry)
+      tl.fromTo('.hero-micro-label', 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+        0.5
+      );
+
+      const words1 = headlineLine1Ref.current.children;
+      const words2 = headlineLine2Ref.current.children;
+
+      tl.fromTo(words1,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.04, ease: 'power3.out' },
         "-=0.8"
       )
-      .fromTo('.hero-description',
+      .fromTo(words2,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1, stagger: 0.04, ease: 'power3.out' },
+        "-=0.8"
+      );
+
+      tl.fromTo('.hero-subheading',
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 },
-        "-=0.8"
+        "-=0.6"
       )
       .fromTo('.hero-ctas',
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 },
         "-=0.8"
+      )
+      .fromTo('.hero-scroll-indicator',
+        { opacity: 0 },
+        { opacity: 1, duration: 1 },
+        "-=0.4"
       );
 
-      // Mouse parallax for floating elements
-      const handleMouseMove = (e) => {
-        const { clientX, clientY } = e;
-        const xPos = (clientX / window.innerWidth - 0.5) * 40;
-        const yPos = (clientY / window.innerHeight - 0.5) * 40;
-
-        gsap.to('.hero-motion-graphic', {
-          x: xPos,
-          y: yPos,
-          duration: 1,
-          ease: 'power2.out',
-          stagger: 0.1
-        });
-      };
-
-      window.addEventListener('mousemove', handleMouseMove);
-      return () => window.removeEventListener('mousemove', handleMouseMove);
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
 
-  const title = 'AIRA';
+  // Advanced Particle Field (Option A)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let animId;
+    let particles = [];
+    
+    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2, targetX: window.innerWidth / 2, targetY: window.innerHeight / 2 };
+    
+    const initParticles = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      const count = window.innerWidth < 768 ? 150 : 400; // Less on mobile
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        const z = Math.random() * 100; // Depth
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          z: z,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          size: (1 - z/100) * 2.5 + 0.5,
+          opacity: (1 - z/100) * 0.6 + 0.1,
+        });
+      }
+    };
+    
+    initParticles();
+    
+    window.addEventListener('resize', initParticles);
+    
+    const handleMouseMove = (e) => {
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Smooth mouse follow
+      mouse.x += (mouse.targetX - mouse.x) * 0.05;
+      mouse.y += (mouse.targetY - mouse.y) * 0.05;
+      
+      const parallaxX = (mouse.x / canvas.width - 0.5) * 50;
+      const parallaxY = (mouse.y / canvas.height - 0.5) * 50;
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        // Wrap around
+        if (p.x < -50) p.x = canvas.width + 50;
+        if (p.x > canvas.width + 50) p.x = -50;
+        if (p.y < -50) p.y = canvas.height + 50;
+        if (p.y > canvas.height + 50) p.y = -50;
+
+        const pX = p.x + parallaxX * (p.z / 100);
+        const pY = p.y + parallaxY * (p.z / 100);
+
+        ctx.beginPath();
+        ctx.arc(pX, pY, p.size, 0, Math.PI * 2);
+        
+        // Electric Cyan: #6ee7ff (approx hsl(190, 100%, 71%))
+        ctx.fillStyle = `hsla(190, 100%, 71%, ${p.opacity})`;
+        
+        // Depth of field blur simulation
+        if (p.z > 70) {
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = `hsla(190, 100%, 71%, ${p.opacity})`;
+        } else {
+          ctx.shadowBlur = 0;
+        }
+        
+        ctx.fill();
+      });
+      
+      animId = requestAnimationFrame(draw);
+    };
+    
+    draw();
+    
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener('resize', initParticles);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const headlineWord = (text) => text.split(' ').map((word, i) => (
+    <span key={i} className="hero-word" style={{ display: 'inline-block', paddingRight: '0.25em' }}>
+      {word}
+    </span>
+  ));
 
   return (
     <section id="hero" className="hero" ref={heroRef}>
-      {/* Live Motion Graphic Background */}
-      <div className="hero-grid-bg">
-        <div className="grid-horizontal"></div>
-        <div className="grid-vertical"></div>
-      </div>
-      <div className="hero-overlay"></div>
-
-      {/* Code-based VFX */}
-      <div className="hero-motion-graphic mg-1"></div>
-      <div className="hero-motion-graphic mg-2"></div>
-      <div className="hero-motion-graphic mg-3"></div>
-      <div className="hero-orb hero-orb-green"></div>
+      {/* Background FX */}
+      <canvas ref={canvasRef} className="hero-particle-canvas" />
+      <div className="hero-bg-gradient"></div>
 
       <div className="hero-content">
-        {/* Logo */}
-        <div className="hero-logo-container" ref={logoRef}>
-          <img src="/logo-icon.png" alt="AIRA Logo" className="hero-logo-img" />
-          <div className="hero-logo-glow"></div>
-        </div>
-
-        {/* Title */}
-        <div className="hero-title-wrapper">
-          <div className="hero-title-line" ref={titleRef}>
-            {title.split('').map((char, i) => (
-              <span key={i} className="hero-title-char" style={{ display: 'inline-block' }}>
-                {char}
-              </span>
-            ))}
-            <span className="hero-title-char text-gradient" style={{ marginLeft: '16px' }}>AI</span>
+        <div className="hero-micro-label">[ AI-POWERED SOLUTIONS ]</div>
+        
+        <h1 className="hero-headline">
+          <div className="hero-headline-line" ref={headlineLine1Ref}>
+            {headlineWord("Intelligent Automation.")}
           </div>
-        </div>
-
-        {/* Tagline */}
-        <p className="hero-tagline">
-          Intelligent Automation <span className="dot">•</span> Autonomous Agents <span className="dot">•</span> Enterprise RAG
+          <div className="hero-headline-line" ref={headlineLine2Ref}>
+            {headlineWord("Engineered for Growth.")}
+          </div>
+        </h1>
+        
+        <p className="hero-subheading">
+          AIRA AI Solutions builds precision-crafted AI systems that eliminate inefficiency, accelerate decision-making, and compound your business advantage — all without the complexity.
         </p>
 
-        <p className="hero-description">
-          We architect intelligent digital ecosystems that redefine how your enterprise operates. Highly realistic, production-ready AI solutions.
-        </p>
-
-        {/* CTAs */}
         <div className="hero-ctas">
-          <button className="hero-cta-primary" data-cursor-pointer
+          <button className="btn-primary" data-cursor-pointer
             onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
-            <div className="cta-glow"></div>
-            <span>Explore Solutions</span>
-            <span className="cta-arrow">→</span>
+            Explore Solutions
           </button>
-          <button className="hero-cta-secondary" data-cursor-pointer
+          <button className="btn-secondary" data-cursor-pointer
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-            Book Strategy Call
+            Watch Demo
           </button>
         </div>
+      </div>
+      
+      <div className="hero-scroll-indicator">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
       </div>
     </section>
   );
