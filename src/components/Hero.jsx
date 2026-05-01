@@ -116,13 +116,13 @@ const Hero = () => {
         </div>
         
         <h1 className="hero-title" ref={titleRef}>
-          <div className="hero-title-line">Redefining</div>
-          <div className="hero-title-line">Enterprise <span className="text-gradient">Scalability</span>.</div>
+          <div className="hero-title-line">Automate Your</div>
+          <div className="hero-title-line">Enterprise <span className="text-gradient">Operations</span>.</div>
         </h1>
         
         <p className="hero-subtitle">
-          Engineered with autonomous intelligence to multiply your operational bandwidth. 
-          Deploy zero-latency agents and RAG pipelines that execute flawlessly.
+          We build secure AI agents and intelligent systems that solve complex bottlenecks, 
+          eliminate manual workflows, and scale your business effortlessly.
         </p>
 
         <div className="hero-ctas">

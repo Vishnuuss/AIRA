@@ -43,26 +43,25 @@ const Problem = () => {
         
         <div className="problem-content">
           <div className="problem-text-reveal-container">
-            <h2 className="problem-title problem-text-reveal">What is your problem?</h2>
+            <h2 className="problem-title problem-text-reveal">Bring Us Your Biggest Challenges.</h2>
           </div>
           <div className="problem-text-reveal-container">
             <h2 className="problem-title-highlight problem-text-reveal text-gradient-alt">
-              With that, we can build AI like that.
+              We Build AI to Solve Them.
             </h2>
           </div>
           
           <div className="problem-text-reveal-container">
             <p className="problem-desc problem-text-reveal">
-              Bring us your most complex bottlenecks, scaling issues, or operational nightmares. 
-              Our engineers don't just apply generic AI tools — we architect bespoke, intelligent 
-              systems that turn your biggest problems into your strongest competitive advantages.
+              Don't settle for generic tools. We engineer custom AI agents and intelligent systems 
+              designed specifically to eliminate your operational bottlenecks and accelerate your growth.
             </p>
           </div>
 
           <div className="problem-text-reveal-container" style={{ marginTop: '40px' }}>
             <button className="problem-btn problem-text-reveal" data-cursor-pointer
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
-              Let's Solve It Together <span className="arrow">→</span>
+              Start Your Project <span className="arrow">→</span>
             </button>
           </div>
         </div>
