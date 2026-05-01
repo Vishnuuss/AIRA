@@ -15,10 +15,9 @@
   display: flex; align-items: center; gap: 20px;
 }
 .loading-logo { 
-  width: 60px; height: 60px; 
+  width: 80px; height: 80px; 
   object-fit: contain; 
-  mix-blend-mode: screen; /* Removes black square background */
-  filter: contrast(1.2) brightness(1.2) drop-shadow(0 0 15px rgba(0, 255, 157, 0.5));
+  filter: drop-shadow(0 0 15px rgba(0, 255, 157, 0.4));
 }
 .loading-logo-text {
   font-family: 'Inter', sans-serif;
