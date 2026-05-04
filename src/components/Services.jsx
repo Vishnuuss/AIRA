@@ -1,151 +1,93 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Database, Zap, Cpu, Network } from 'lucide-react';
-import './Services.css';
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion } from 'framer-motion';
 
 const services = [
   {
-    icon: <Cpu size={32} className="service-icon-svg" />,
-    title: 'Autonomous Agents',
-    description: 'Deploy reasoning engines that autonomously execute multi-step workflows, bridging the gap between raw LLM intelligence and actionable business outcomes.',
-    tags: ['LangChain', 'AutoGPT', 'Function Calling'],
-    visual: 'nodes'
+    title: 'AI Systems',
+    desc: 'End-to-end artificial intelligence ecosystems engineered for enterprise-scale decision making and intelligence processing.',
+    icon: '⬡'
   },
   {
-    icon: <Database size={32} className="service-icon-svg" />,
-    title: 'Enterprise RAG Systems',
-    description: 'Vector-native search architectures that ingest millions of internal documents, delivering hallucination-free intelligence instantly to your workforce.',
-    tags: ['Pinecone', 'Embeddings', 'Semantic Search'],
-    visual: 'radar'
+    title: 'AI Agents',
+    desc: 'Autonomous digital workers capable of reasoning, executing complex workflows, and interacting seamlessly with human operators.',
+    icon: '⎔'
   },
   {
-    icon: <Zap size={32} className="service-icon-svg" />,
-    title: 'Zero-Latency Automation',
-    description: 'Event-driven orchestration that eradicates operational bottlenecks. We seamlessly connect disparate APIs into unified, intelligent pipelines.',
-    tags: ['Make', 'n8n', 'Custom Webhooks'],
-    visual: 'pulse'
+    title: 'RAG Architecture',
+    desc: 'Retrieval-Augmented Generation pipelines linking your proprietary data securely directly to powerful LLM cognitive engines.',
+    icon: '∰'
   },
   {
-    icon: <Network size={32} className="service-icon-svg" />,
-    title: 'Strategic Architecture',
-    description: 'We don\'t just deploy tools; we architect scalable AI infrastructure designed for enterprise security, compliance, and exponential growth.',
-    tags: ['System Design', 'Security', 'Scalability'],
-    visual: 'grid'
+    title: 'Automations',
+    desc: 'Intelligent process automation that eliminates manual bottlenecks, ensuring 24/7 operational efficiency with zero latency.',
+    icon: '⚡'
+  },
+  {
+    title: 'Custom AI Agents',
+    desc: 'Bring your idea, and we build it from scratch. Completely tailored AI agents designed exactly to your specifications and use cases.',
+    icon: '✧'
   }
 ];
 
-const Services = () => {
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo('.services-header > *',
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1,
-          scrollTrigger: { trigger: '.services-header', start: 'top 80%' }
-        }
-      );
-
-      const cards = gsap.utils.toArray('.service-card');
-      cards.forEach((card, i) => {
-        gsap.fromTo(card,
-          { y: 60, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, delay: i * 0.1, ease: 'power3.out',
-            scrollTrigger: { trigger: '.services-grid', start: 'top 75%' }
-          }
-        );
-      });
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
-
-  const renderVisual = (type) => {
-    switch(type) {
-      case 'radar':
-        return (
-          <div className="svc-visual radar-visual">
-            <div className="radar-circle rc-1"></div>
-            <div className="radar-circle rc-2"></div>
-            <div className="radar-circle rc-3"></div>
-            <div className="radar-sweep"></div>
-          </div>
-        );
-      case 'nodes':
-        return (
-          <div className="svc-visual nodes-visual">
-            <div className="node n1"></div>
-            <div className="node n2"></div>
-            <div className="node n3"></div>
-            <div className="node-line nl1"></div>
-            <div className="node-line nl2"></div>
-          </div>
-        );
-      case 'pulse':
-        return (
-          <div className="svc-visual pulse-visual">
-            <div className="pulse-line"></div>
-            <div className="pulse-dot"></div>
-          </div>
-        );
-      case 'grid':
-      default:
-        return (
-          <div className="svc-visual grid-visual">
-            <div className="g-cell"></div>
-            <div className="g-cell active"></div>
-            <div className="g-cell"></div>
-            <div className="g-cell"></div>
-            <div className="g-cell"></div>
-            <div className="g-cell active"></div>
-          </div>
-        );
-    }
-  };
-
+export default function Services() {
   return (
-    <section id="services" className="services-section" ref={containerRef}>
-      <div className="services-container">
-        
-        <div className="services-header">
-          <span className="section-label">OUR SOLUTIONS</span>
-          <h2 className="section-title">Limitless <span className="text-gradient">Orchestration</span></h2>
-          <p className="services-subtitle">
-            We engineer high-fidelity AI systems that transform operational friction into compounding velocity.
-          </p>
-        </div>
+    <section id="ai-systems" className="section-container" style={{ paddingTop: '4rem', paddingBottom: '8rem' }}>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 1 }}
+        style={{ marginBottom: '5rem', textAlign: 'center' }}
+      >
+        <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 900, marginBottom: '1rem' }}>
+          OUR <span className="text-gradient">CAPABILITIES</span>
+        </h2>
+        <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
+          Precision-engineered solutions. We build pure intelligence.
+        </p>
+      </motion.div>
 
-        <div className="services-grid">
-          {services.map((svc, i) => (
-            <div key={i} className="service-card" data-cursor-pointer>
-              <div className="service-card-glow"></div>
-              
-              <div className="service-visual-container">
-                {renderVisual(svc.visual)}
-                <div className="service-icon-wrapper">
-                  {svc.icon}
-                </div>
-              </div>
-
-              <div className="service-content">
-                <h3 className="service-title">{svc.title}</h3>
-                <p className="service-desc">{svc.description}</p>
-                
-                <div className="service-tags">
-                  {svc.tags.map((tag, idx) => (
-                    <span key={idx} className="service-tag">{tag}</span>
-                  ))}
-                </div>
-              </div>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+        gap: '2rem'
+      }}>
+        {services.map((svc, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="glass-panel"
+            style={{
+              padding: '3rem 2rem',
+              position: 'relative',
+              overflow: 'hidden',
+              cursor: 'default',
+              transition: 'transform 0.4s ease, border-color 0.4s ease'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-10px)';
+              e.currentTarget.style.borderColor = 'rgba(111, 168, 122, 0.3)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.borderColor = 'var(--glass-border)';
+            }}
+          >
+            <div style={{
+              fontSize: '3rem',
+              color: 'var(--accent-color)',
+              marginBottom: '1.5rem',
+              opacity: 0.8
+            }}>
+              {svc.icon}
             </div>
-          ))}
-        </div>
-
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>{svc.title}</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>{svc.desc}</p>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
-};
-
-export default Services;
+}

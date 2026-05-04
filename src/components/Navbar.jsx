@@ -1,100 +1,64 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import './Navbar.css';
+import { motion } from 'framer-motion';
+import { Menu } from 'lucide-react';
 
-const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-      const sections = ['hero', 'services', 'tools', 'about', 'process', 'contact'];
-      for (const id of sections.reverse()) {
-        const el = document.getElementById(id);
-        if (el && window.scrollY >= el.offsetTop - 300) {
-          setActiveSection(id);
-          break;
-        }
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setMenuOpen(false);
-  };
-
-  const links = [
-    { id: 'services', label: 'Services' },
-    { id: 'about', label: 'Why AIRA' },
-    { id: 'process', label: 'Process' },
-    { id: 'testimonials', label: 'Clients' },
-  ];
-
+export default function Navbar() {
   return (
-    <motion.div className="navbar-wrapper"
-      initial={{ y: -100, opacity: 0 }} 
-      animate={{ y: 0, opacity: 1 }} 
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}>
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        <div className="navbar-inner">
-          <motion.div className="navbar-logo" onClick={() => scrollTo('hero')}
-            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} data-cursor-pointer>
-            <img src="/logo-icon.png" alt="AIRA AI" className="navbar-logo-img" />
-            <span className="navbar-logo-text">AIRA <span className="navbar-logo-ai">AI</span></span>
-          </motion.div>
+    <motion.nav 
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        padding: '1.5rem 2rem',
+        zIndex: 100,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        background: 'linear-gradient(180deg, rgba(5,5,5,0.9) 0%, rgba(5,5,5,0) 100%)',
+        backdropFilter: 'blur(4px)',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <img src="/logo.svg" alt="AIRA AI Logo" style={{ height: '40px', width: 'auto' }} />
+        <span style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '0.05em' }}>
+          AIRA <span className="text-gradient">AI</span>
+        </span>
+      </div>
 
-          <div className="navbar-links">
-            {links.map(link => (
-              <motion.button key={link.id}
-                className={`navbar-link ${activeSection === link.id ? 'active' : ''}`}
-                onClick={() => scrollTo(link.id)}
-                whileHover={{ y: -2 }} whileTap={{ scale: 0.95 }} data-cursor-pointer>
-                {link.label}
-              </motion.button>
-            ))}
-          </div>
+      <div style={{ display: 'none', gap: '2.5rem', alignItems: 'center' }} className="desktop-menu">
+        {['AI Systems', 'AI Agents', 'RAG', 'Automations'].map((item) => (
+          <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} style={{
+            color: 'var(--text-secondary)',
+            textDecoration: 'none',
+            fontSize: '0.9rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            transition: 'color 0.3s ease'
+          }}
+          onMouseOver={(e) => e.target.style.color = '#fff'}
+          onMouseOut={(e) => e.target.style.color = 'var(--text-secondary)'}
+          >
+            {item}
+          </a>
+        ))}
+        <button className="btn-primary" style={{ padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}>
+          Get Started
+        </button>
+      </div>
 
-          <motion.button className="navbar-cta" onClick={() => scrollTo('contact')}
-            whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(0, 255, 157, 0.4)' }} 
-            whileTap={{ scale: 0.95 }} data-cursor-pointer>
-            Deploy Now
-          </motion.button>
+      <button style={{ background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }} className="mobile-menu">
+        <Menu size={28} />
+      </button>
 
-          <button className={`navbar-hamburger ${menuOpen ? 'open' : ''}`}
-            onClick={() => setMenuOpen(!menuOpen)} data-cursor-pointer>
-            <span /><span /><span />
-          </button>
-        </div>
-
-        <AnimatePresence>
-          {menuOpen && (
-            <motion.div className="navbar-mobile-menu"
-              initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}>
-              {links.map((link, i) => (
-                <motion.button key={link.id} className="navbar-mobile-link"
-                  onClick={() => scrollTo(link.id)}
-                  initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }} data-cursor-pointer>
-                  {link.label}
-                </motion.button>
-              ))}
-              <motion.button className="navbar-cta mobile" onClick={() => scrollTo('contact')}
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-                data-cursor-pointer>
-                Deploy Now
-              </motion.button>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
-    </motion.div>
+      <style>{`
+        @media (min-width: 1024px) {
+          .desktop-menu { display: flex !important; }
+          .mobile-menu { display: none !important; }
+        }
+      `}</style>
+    </motion.nav>
   );
-};
-
-export default Navbar;
+}

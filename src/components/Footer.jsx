@@ -1,68 +1,51 @@
 import { motion } from 'framer-motion';
-import './Footer.css';
 
-const Footer = () => {
-  const year = new Date().getFullYear();
-
-  const footerLinks = {
-    Services: ['AI Automation', 'AI Agents', 'Enterprise RAG', 'Custom Solutions'],
-    Company: ['About Us', 'Process', 'Case Studies', 'Careers'],
-    Resources: ['Blog', 'Documentation', 'API Reference', 'Community'],
-  };
-
+export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-divider" />
-      <div className="footer-container">
-        <div className="footer-main">
-          <div className="footer-brand">
-            <div className="footer-logo">
-              <img src="/logo-icon.png" alt="AIRA AI" className="footer-logo-img" />
-              <span className="footer-logo-text">AIRA <span>AI</span></span>
-            </div>
-            <p className="footer-tagline">
-              Architecting intelligent systems that transform how enterprises operate.
-            </p>
-            <div className="footer-socials">
-              {['X', 'Li', 'GH', 'YT'].map((icon, i) => (
-                <motion.a key={i} href="#" className="social-link"
-                  whileHover={{ y: -3, borderColor: 'rgba(82,140,94,0.4)' }}
-                  data-cursor-pointer>
-                  {icon}
-                </motion.a>
-              ))}
-            </div>
-          </div>
+    <footer style={{
+      borderTop: '1px solid var(--glass-border)',
+      padding: '4rem 2rem',
+      marginTop: '4rem',
+      background: 'rgba(5, 5, 5, 0.8)',
+      backdropFilter: 'blur(10px)',
+      position: 'relative',
+      zIndex: 10
+    }}>
+      <div className="section-container" style={{
+        padding: '0',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '2rem'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <img src="/logo.svg" alt="AIRA AI Logo" style={{ height: '32px', width: 'auto', opacity: 0.8 }} />
+          <span style={{ fontSize: '1.2rem', fontWeight: 700, letterSpacing: '0.05em', color: 'var(--text-secondary)' }}>
+            AIRA <span className="text-gradient">AI</span>
+          </span>
+        </div>
+        
+        <p style={{ color: 'var(--text-secondary)', textAlign: 'center', maxWidth: '400px', fontSize: '0.9rem' }}>
+          Building the future of autonomous systems and enterprise-grade artificial intelligence.
+        </p>
 
-            <div className="footer-column">
-              <h4 className="footer-column-title">Company</h4>
-              <ul>
-                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>About Us</motion.a></li>
-                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>Process</motion.a></li>
-                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>Case Studies</motion.a></li>
-                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>Careers</motion.a></li>
-              </ul>
-            </div>
+        <div style={{ 
+          width: '100%', 
+          height: '1px', 
+          background: 'linear-gradient(90deg, transparent, var(--glass-border), transparent)',
+          margin: '2rem 0'
+        }} />
 
-            <div className="footer-column">
-              <h4 className="footer-column-title">Contact</h4>
-              <ul>
-                <li><motion.a href="mailto:elevatexvishnu@gmail.com" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>elevatexvishnu@gmail.com</motion.a></li>
-                <li><motion.a href="#" whileHover={{ x: 4, color: '#6ee7ff' }} data-cursor-pointer>Book Strategy Call</motion.a></li>
-              </ul>
-            </div>
-          </div>
-
-        <div className="footer-bottom">
-          <p>© {year} AIRA AI. All rights reserved.</p>
-          <div className="footer-bottom-links">
-            <a href="#" data-cursor-pointer>Privacy Policy</a>
-            <a href="#" data-cursor-pointer>Terms of Service</a>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
+            © {new Date().getFullYear()} AIRA AI Solutions. All rights reserved.
+          </p>
+          <div style={{ display: 'flex', gap: '2rem' }}>
+            <a href="#" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.8rem' }}>Privacy Policy</a>
+            <a href="#" style={{ color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.8rem' }}>Terms of Service</a>
           </div>
         </div>
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

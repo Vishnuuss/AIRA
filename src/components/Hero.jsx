@@ -1,144 +1,72 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ShieldAlert, Activity, Cpu } from 'lucide-react';
-import './Hero.css';
+import { motion } from 'framer-motion';
 
-gsap.registerPlugin(ScrollTrigger);
-
-const Hero = () => {
-  const heroRef = useRef(null);
-  const titleRef = useRef(null);
-  const floatingCardsRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
-
-      // Core elements entrance
-      tl.fromTo('.hero-micro-label', 
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1 },
-        0.5
-      )
-      .fromTo('.hero-title-line',
-        { y: 50, opacity: 0, rotateX: -20 },
-        { y: 0, opacity: 1, rotateX: 0, duration: 1.2, stagger: 0.1, transformOrigin: 'bottom center' },
-        "-=0.8"
-      )
-      .fromTo('.hero-subtitle',
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1 },
-        "-=0.8"
-      )
-      .fromTo('.hero-ctas',
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1 },
-        "-=0.8"
-      );
-
-      // Floating spatial cards entrance
-      tl.fromTo('.spatial-card',
-        { scale: 0.8, opacity: 0, y: 30 },
-        { scale: 1, opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: 'back.out(1.5)' },
-        "-=1"
-      );
-
-      // Mouse Parallax for Spatial Cards
-      const handleMouseMove = (e) => {
-        const { clientX, clientY } = e;
-        const xPos = (clientX / window.innerWidth - 0.5);
-        const yPos = (clientY / window.innerHeight - 0.5);
-
-        gsap.to('.spatial-card-1', { x: xPos * 40, y: yPos * 40, duration: 1, ease: 'power2.out' });
-        gsap.to('.spatial-card-2', { x: xPos * -30, y: yPos * -50, duration: 1, ease: 'power2.out' });
-        gsap.to('.spatial-card-3', { x: xPos * 50, y: yPos * -30, duration: 1, ease: 'power2.out' });
-        gsap.to('.hero-bg-glow', { x: xPos * 100, y: yPos * 100, duration: 2, ease: 'power1.out' });
-      };
-
-      window.addEventListener('mousemove', handleMouseMove);
-      return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
-
+export default function Hero() {
   return (
-    <section id="hero" className="hero-section" ref={heroRef}>
-      <div className="hero-bg-glow"></div>
-      <div className="hero-grid-overlay"></div>
-
-      {/* Floating Spatial UI Modules */}
-      <div className="spatial-cards-container" ref={floatingCardsRef}>
-        <div className="spatial-card spatial-card-1">
-          <div className="sc-header">
-            <Activity size={16} color="var(--accent)" />
-            <span>System Status</span>
-          </div>
-          <div className="sc-body">
-            <div className="sc-value text-gradient">Online</div>
-            <div className="sc-graph">
-              <div className="bar b1"></div>
-              <div className="bar b2"></div>
-              <div className="bar b3"></div>
-              <div className="bar b4"></div>
-            </div>
-          </div>
-        </div>
-
-        <div className="spatial-card spatial-card-2">
-          <div className="sc-header">
-            <Cpu size={16} color="var(--accent)" />
-            <span>Agents Active</span>
-          </div>
-          <div className="sc-body">
-            <div className="sc-value">1,402</div>
-            <div className="sc-subtext">+12% this week</div>
-          </div>
-        </div>
-
-        <div className="spatial-card spatial-card-3">
-          <div className="sc-header">
-            <ShieldAlert size={16} color="var(--accent)" />
-            <span>Threats Blocked</span>
-          </div>
-          <div className="sc-body">
-            <div className="sc-value">Zero</div>
-            <div className="sc-badge">Secure</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="hero-content">
-        <div className="hero-micro-label">
-          <span className="pulsing-dot"></span>
-          Enterprise AI Infrastructure
-        </div>
+    <section className="section-container" style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
+      paddingTop: '8rem'
+    }}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+        animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+        style={{ position: 'relative' }}
+      >
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '300px',
+          height: '300px',
+          background: 'var(--accent-glow)',
+          filter: 'blur(100px)',
+          borderRadius: '50%',
+          zIndex: -1
+        }} />
         
-        <h1 className="hero-title" ref={titleRef}>
-          <div className="hero-title-line">AI That Does The</div>
-          <div className="hero-title-line">Work <span className="text-gradient">For You</span>.</div>
-        </h1>
-        
-        <p className="hero-subtitle">
-          We build smart AI agents that automate your daily tasks, 
-          save you time, and help your business grow fast.
-        </p>
+        <motion.h1 
+          style={{ 
+            fontSize: 'clamp(3rem, 8vw, 6rem)', 
+            marginBottom: '1.5rem',
+            lineHeight: 1,
+            fontWeight: 900
+          }}
+        >
+          THE NEXT ERA OF <br />
+          <span className="text-gradient">INTELLIGENCE</span>
+        </motion.h1>
 
-        <div className="hero-ctas">
-          <button className="btn-primary" data-cursor-pointer
-            onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}>
-            <div className="btn-glow"></div>
-            <span>Initialize Systems</span>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          style={{ 
+            fontSize: 'clamp(1rem, 2vw, 1.25rem)', 
+            color: 'var(--text-secondary)',
+            maxWidth: '600px',
+            margin: '0 auto 3rem auto'
+          }}
+        >
+          We engineer enterprise-grade AI systems, autonomous agents, RAG architectures, and workflow automations to scale your vision.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}
+        >
+          <button className="btn-primary">
+            Deploy AI Now
           </button>
-          <button className="btn-secondary" data-cursor-pointer
-            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
-            View Architecture
-          </button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
-};
-
-export default Hero;
+}
